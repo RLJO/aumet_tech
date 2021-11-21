@@ -27,8 +27,8 @@ def start_end_date_global(start, end, tz):
     hour_tz = int(str(current_time)[-5:][:2])
     min_tz = int(str(current_time)[-5:][3:])
     sign = str(current_time)[-6][:1]
-    sdate = start + " 00:00:00"
-    edate = end + " 23:59:59"
+    sdate = start + "00:00:00"
+    edate = end + "23:59:59"
     if sign == '-':
         start_date = (datetime.strptime(sdate, '%Y-%m-%d %H:%M:%S') + timedelta(hours=hour_tz,
                                                                                 minutes=min_tz)).strftime(
@@ -37,12 +37,11 @@ def start_end_date_global(start, end, tz):
                                                                               minutes=min_tz)).strftime(
             "%Y-%m-%d %H:%M:%S")
     if sign == '+':
-        start_date = (datetime.strptime(sdate, '%Y-%m-%d %H:%M:%S') - timedelta(hours=hour_tz,
-                                                                                minutes=min_tz)).strftime(
-            "%Y-%m-%d %H:%M:%S")
-        end_date = (datetime.strptime(edate, '%Y-%m-%d %H:%M:%S') - timedelta(hours=hour_tz,
+        start_date = (datetime.strptime(sdate[:-8], '%Y-%m-%d %H:%M:%S') - timedelta(hours=hour_tz,minutes=min_tz)).strftime("%Y-%m-%d %H:%M:%S")
+        end_date = (datetime.strptime(edate[:-8], '%Y-%m-%d %H:%M:%S') - timedelta(hours=hour_tz,
                                                                               minutes=min_tz)).strftime(
             "%Y-%m-%d %H:%M:%S")
+
     return start_date, end_date
 
 
@@ -405,10 +404,7 @@ class PosOrder(models.Model):
             for line in ui_order.get('refund_ref_order').get('lines'):
                 reference_order_line_id = self.env['pos.order.line'].browse(line[2].get('id'))
                 if reference_order_line_id:
-                    if float(line[2].get('return_qty')) > float(line[2].get('order_return_qty')):
-                        quantity = reference_order_line_id.order_return_qty - float(line[2].get('order_return_qty'))
-                    else:
-                        quantity = reference_order_line_id.order_return_qty - float(line[2].get('return_qty'))
+                    quantity = reference_order_line_id.order_return_qty - float(line[2].get('return_qty'))
                     reference_order_line_id.order_return_qty = quantity
                     return_lot_name = []
                     if line[2].get('select_operation_lot_name'):
@@ -793,18 +789,17 @@ class PosOrder(models.Model):
             local = pytz.timezone(self.env.user.tz)
             start_date = vals.get('start_date') + " 00:00:00"
             start_date_time = datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
-            start_local_dt = local.localize(start_date_time, is_dst=None)
-            start_utc_dt = start_local_dt.astimezone(pytz.utc)
-            string_utc_date_time = start_utc_dt.strftime('%Y-%m-%d %H:%M:%S')
+            # start_local_dt = local.localize(start_date_time, is_dst=None)
+            # start_utc_dt = start_local_dt.astimezone(pytz.utc)
+            string_utc_date_time = start_date_time.strftime('%Y-%m-%d %H:%M:%S')
 
             end_date = vals.get('end_date') + " 23:59:59"
             end_date_time = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
-            end_local_dt = local.localize(end_date_time, is_dst=None)
-            end_utc_dt = end_local_dt.astimezone(pytz.utc)
-            string_end_utc_date_time = end_utc_dt.strftime('%Y-%m-%d %H:%M:%S')
+            # end_local_dt = local.localize(end_date_time, is_dst=None)
+            # end_utc_dt = end_local_dt.astimezone(pytz.utc)
+            string_end_utc_date_time = end_date_time.strftime('%Y-%m-%d %H:%M:%S')
 
-            s_date = string_utc_date_time
-            e_date = string_end_utc_date_time
+            s_date, e_date = start_end_date_global(string_utc_date_time, string_end_utc_date_time, current_time_zone)
             if vals.get('summary') == 'journals':
                 sql = """ SELECT
                         REPLACE(CONCAT(to_char(to_timestamp(
@@ -951,28 +946,6 @@ class PosOrder(models.Model):
                                  }
                 self.env['pos.doctor.commission'].create(doctor_detail)
         return res
-
-    @api.model
-    def search_product_order_ids(self, config_id, keyword, session_id):
-        default_domain = ['&', ('config_id', '=', config_id), '!', '|', ('state', '=', 'draft'), ('state', '=', 'cancelled')]
-        record = []
-        # Order 00001-007-0003
-        keyword = keyword.get('term')
-        print("////////*****--config_id---****/////////",config_id)
-        order_ids = self.search(['|',('pos_reference', 'ilike', keyword), ('name', 'ilike', keyword)])
-        if not order_ids:
-            product_ids = self.env['product.product'].search(['|', ('name', 'ilike', keyword), '|', ('barcode', 'ilike', keyword), ('default_code', 'ilike', keyword)])
-            line_ids = self.env['pos.order.line'].search([('product_id', 'in', product_ids.ids)])
-            order_ids = line_ids.mapped('order_id')
-        for order_id in order_ids.filtered(lambda order: order.session_id.id == session_id):
-            record_dict = {
-                'label': order_id.name +'('+ order_id.pos_reference + ')',
-                'value': order_id.pos_reference,
-            }
-            record.append(record_dict)
-        # order_name_list = order_ids.mapped('pos_reference')
-        # print("/////////*****--order_name_list--***///////",order_name_list)
-        return {'ids': record}
 
 
 class ReturnPosOrderLineLot(models.Model):

@@ -18,7 +18,7 @@
 
     function getDomainForSingleCondition(fields, toSearch) {
         const orSymbols = Array(fields.length - 1).fill('|');
-        return orSymbols.concat(fields.map((field) => [field, '=', `${toSearch}`]));
+        return orSymbols.concat(fields.map((field) => [field, '=', `Order ${toSearch}`]));
     }
 
     class OrderReturnScreen extends PosComponent {
@@ -64,28 +64,6 @@
         onInputKeydown(event) {
             if (event.key === 'Enter') {
                 this._onSearch()
-            }
-        }
-        async autoCompleteOrder(ev){
-            var self = this;
-            if (event.key === 'Enter') {
-                this._onSearch()
-            }else{
-                $(ev.currentTarget).autocomplete({
-                    source: async function(request, response) {
-                        var orders = await self.rpc({
-                            model: 'pos.order',
-                            method: 'search_product_order_ids',
-                            kwargs: { config_id: self.env.pos.config.id, keyword: request, session_id: self.env.pos.pos_session.id},
-                            context: self.env.session.user_context,
-                        }); 
-                        var results = $.ui.autocomplete.filter(orders.ids, request.term);
-                        response(orders.ids);
-                    },
-                    select: function(event, ui) {
-                        self.orderManagementContext.searchString = ui.item.value;
-                    },
-                })
             }
         }
         ReturnAllProductQty() {
@@ -146,7 +124,7 @@
             for (let cond of searchConditions) {
                 let [tag, value] = cond.split(/:\s*/);
                 if (!this.validSearchTags.has(tag)) continue;
-                domain.push([this.fieldMap[tag], '=', `${value}`]);
+                domain.push([this.fieldMap[tag], '=', `Order ${value}`]);
             }
             return domain;
         }
@@ -171,7 +149,7 @@
                 method: 'search_paid_order_ids',
                 kwargs: { config_id: this.env.pos.config.id, domain: this._computeDomain() ? this._computeDomain() : [['pos_reference', '=', 'Order ']], limit, offset},
                 context: this.env.session.user_context,
-            });
+            }); 
             if (search_order_id && search_order_id.totalCount > 0){
                 this.state.orders = await this.rpc({
                     model: 'pos.order',

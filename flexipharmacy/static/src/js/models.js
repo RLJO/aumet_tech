@@ -229,7 +229,13 @@ odoo.define('flexipharmacy.models', function (require) {
     models.Orderline = models.Orderline.extend({
         initialize: function(attr,options){
             _super_orderline.initialize.call(this, attr, options);
-            this.uom_id = this.product.uom_id;
+            if (options.json) {
+                this.uom_id = options.json.uom_id;
+            }
+            else{
+                this.uom_id = this.product.uom_id;
+            }
+
             this.serials = this.serials || null;
             this.ingredients = this.ingredients || null;
             this.selected_ingredients = this.selected_ingredients || null;

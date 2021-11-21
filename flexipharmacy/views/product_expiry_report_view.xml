@@ -8,13 +8,12 @@
             <field name="model">product.expiry.report</field>
             <field name="arch" type="xml">
                 <form string="Product Expiry Report">
-                    <group>
-                        <group>
-                            <field name="from_date"/>
-                        </group>
-                        <group>
-                            <field name="to_date"/>
-                        </group>
+                    <group col="3">
+                        <label for="num_expiry_days" string="Product Expiry In Next" style='width: 114%;'/>
+                        <field name="num_expiry_days" required="True" nolabel='1'/>
+                        <b>
+                            <span>Days</span>
+                        </b>
                     </group>
                     <group>
                         <field name="group_by" widget="radio"/>
