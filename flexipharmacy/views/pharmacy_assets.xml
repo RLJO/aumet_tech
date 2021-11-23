@@ -7,6 +7,7 @@
             <link rel="stylesheet" href="/flexipharmacy/static/src/css/lock_screen.css"/>
             <link rel="stylesheet" href="/flexipharmacy/static/src/css/pos_reprot.css"/>
             <link rel="stylesheet" href="/flexipharmacy/static/src/css/screen_style.css"/>
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"/>
 
             <script type="text/javascript" src="/flexipharmacy/static/src/js/db.js"/>
             <script type="text/javascript" src="/flexipharmacy/static/src/js/models.js"/>
@@ -155,9 +156,13 @@
                     src="/flexipharmacy/static/src/js/Screens/GiftVoucherScreen/GiftVoucherScreen.js"/>
 
             <script type="text/javascript"
-                    src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/OrderReturnScreen.js"/>
+                    src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderList.js"/>
+            <script type="text/javascript"
+                    src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderRow.js"/>
+            <!-- ========================================================================================== -->
             <script type="text/javascript"
                     src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/OrderReturnProductList.js"/>
+            <!-- ========================================================================================== -->
 
             <script type="text/javascript"
                     src="/flexipharmacy/static/src/js/ChromeWidgets/SelectUserForOrder.js"/>
@@ -220,6 +225,16 @@
             <script type="text/javascript"
                     src="/flexipharmacy/static/src/js/Screens/PaymentScreen/PaymentScreendisabledNumpad.js"/>
 
+            <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderScreen.js"/>
+            <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderDetails.js"/>
+            <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderFetcher.js"/>
+            <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderManagementControlPanel.js"/>
+            <!-- <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderRow.js"/> -->
+            <!-- <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderList.js"/> -->
+            <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderlineDetails.js"/>
+            <!-- <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderManagementScreen/ReprintReceiptScreen.js"/>
+            <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderManagementScreen/MobileOrderManagementScreen.js"/> -->
+
         </xpath>
     </template>
 
@@ -247,7 +262,6 @@
             <script type="text/javascript" src="/flexipharmacy/static/src/js/expiry_dashboard/Chart.js"/>
             <script type="text/javascript" src="/flexipharmacy/static/src/js/expiry_dashboard/dashboard.js"/>
             <script type="text/javascript" src="/flexipharmacy/static/src/js/expiry_dashboard/list.js"/>
-            <script type="text/javascript" src="/flexipharmacy/static/src/js/expiry_dashboard/moment-with-locales.js"/>
             <script type="text/javascript" src="/flexipharmacy/static/src/js/expiry_dashboard/readmore.js"/>
             
             <!-- <link rel="stylesheet" href="/flexipharmacy/static/src/css/bootstrap.min.css"/> -->
@@ -283,7 +297,7 @@
                 <link rel="shortcut icon" href="/web/static/src/img/favicon.ico" type="image/x-icon"/>
 
                 <script type="text/javascript">
-                    var odoo =<t t-raw="json.dumps({
+                    var odoo = <t t-raw="json.dumps({
                             'csrf_token': request.csrf_token(None),
                             'session_info': session_info,
                             'login_number': login_number,
