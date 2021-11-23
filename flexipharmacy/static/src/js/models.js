@@ -229,13 +229,7 @@ odoo.define('flexipharmacy.models', function (require) {
     models.Orderline = models.Orderline.extend({
         initialize: function(attr,options){
             _super_orderline.initialize.call(this, attr, options);
-            if (options.json) {
-                this.uom_id = options.json.uom_id;
-            }
-            else{
-                this.uom_id = this.product.uom_id;
-            }
-
+            this.uom_id = this.product.uom_id;
             this.serials = this.serials || null;
             this.ingredients = this.ingredients || null;
             this.selected_ingredients = this.selected_ingredients || null;
@@ -252,6 +246,11 @@ odoo.define('flexipharmacy.models', function (require) {
             this.promotion_flag = this.promotion_flag || false;
             this.promotion_disc_parentId = this.promotion_disc_parentId || false;
             this.promotion_disc_childId = this.promotion_disc_childId || false;
+            this.order_return_qty = this.order_return_qty || 0;
+            this.return_qty = this.return_qty || 0;
+            this.price_unit = this.price_unit || 0;
+            this.operation_lot_name = this.operation_lot_name || [];
+            this.pack_lot_ids = this.pack_lot_ids || false;
             /* POS Promotion Code End */
         },
         set_product_note: function(line_note){
@@ -306,6 +305,11 @@ odoo.define('flexipharmacy.models', function (require) {
             this.promotion_flag = json.promotion_flag;
             this.promotion_disc_parentId = json.promotion_disc_parentId;
             this.promotion_disc_childId = json.promotion_disc_childId;
+            this.order_return_qty = json.order_return_qty;
+            this.return_qty = json.return_qty;
+            this.price_unit = json.price_unit;
+            this.operation_lot_name = json.operation_lot_name;
+            this.pack_lot_ids = json.pack_lot_ids;
             /* POS Promotion Code End */
         },
         set_orderline_ingredients: function(ingredients){
@@ -363,6 +367,10 @@ odoo.define('flexipharmacy.models', function (require) {
             json.promotion_flag = this.promotion_flag;
             json.promotion_disc_parentId = this.promotion_disc_parentId;
             json.promotion_disc_childId = this.promotion_disc_childId;
+            json.price_unit = this.price_unit;
+            json.operation_lot_name = this.operation_lot_name;
+            json.pack_lot_ids = this.pack_lot_ids;
+            json.return_qty = this.return_qty;
             /* POS Promotion Code End */
             return json;
         },
@@ -550,7 +558,6 @@ odoo.define('flexipharmacy.models', function (require) {
                 recharge: false,
                 order_user_id:false,
 //                selected_doctor : false,
-                refund_ref_order:false,
             });
             if (this.pos.config.enable_loyalty){
                 this.set({
@@ -584,6 +591,9 @@ odoo.define('flexipharmacy.models', function (require) {
             /* POS Promotion Code Start */
             this.orderPromotion = this.orderPromotion || false;
             this.orderDiscountLine = this.orderDiscountLine || false;
+            this.return_qty = this.return_qty || false;
+            this.refund_ref_order = this.refund_ref_order || false;
+            this.refund_ref_orderline = this.refund_ref_orderline || false;
             /* POS Promotion Code End */
             return this;
         },
@@ -789,11 +799,17 @@ odoo.define('flexipharmacy.models', function (require) {
         get_raw_sign : function(){
             return this.raw_sign;
         },
+        set_refund_ref_orderline: function(refund_ref_orderline) {
+            this.refund_ref_orderline = refund_ref_orderline;
+        },
+        get_refund_ref_orderline: function() {
+            return this.refund_ref_orderline;
+        },
         set_refund_ref_order: function(refund_ref_order) {
-            this.set('refund_ref_order', refund_ref_order);
+            this.refund_ref_order = refund_ref_order;
         },
         get_refund_ref_order: function() {
-            return this.get('refund_ref_order');
+            return this.refund_ref_order;
         },
         set_refund_order: function(refund_order){
             this.refund_order = refund_order;
@@ -1069,7 +1085,9 @@ odoo.define('flexipharmacy.models', function (require) {
             orders.ref_customer = this.get_reference_customer() || false;
             orders.referral_event = this.get_referral_event_type() || false;
             orders.refund_order = this.refund_order || false;
-            orders.refund_ref_order = this.get_refund_ref_order() || false;
+            orders.refund_ref_order = this.refund_ref_order || false;
+            orders.refund_ref_orderline = this.refund_ref_orderline || false;
+
             // Signature
             orders.sign = this.sign || false;
             orders.raw_sign = this.raw_sign || false;

@@ -42,7 +42,7 @@
             </section>
         </xpath>
         <xpath expr="//div[hasclass('payment-controls')]" position="inside">
-            <t t-if="!env.pos.get_order().get_refund_order()">
+            <!-- <t t-if="!env.pos.get_order().get_refund_order()"> -->
                 <div class="pos-signature-controls"
                      t-if="env.pos.config.enable_signature and env.pos.user.access_signature">
                     <div class="wallet-controls " style="margin-top: 13px;">
@@ -99,10 +99,10 @@
                         </div>
                     </div>
                 </t>
-            </t>
+            <!-- </t> -->
         </xpath>
         <xpath expr="//div[hasclass('payment-buttons')]" position="inside">
-            <t t-if="!env.pos.get_order().get_refund_order()">
+            <!-- <t t-if="!env.pos.get_order().get_refund_order()"> -->
                 <t t-if="env.pos.get_order().get_client() and env.pos.loyalty_config.enable_customer_referral">
                     <br/>
                     <div class="customer-button">
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                 </t>
-            </t>
+            <!-- </t> -->
         </xpath>
     </t>
 </templates>
