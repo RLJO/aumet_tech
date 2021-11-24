@@ -111,11 +111,11 @@ odoo.define('pos_multi_uom_price.models', function (require) {
         apply_uom: function () {
             var self = this;
             var orderline = self.pos.get_order().get_selected_orderline();
-            console.log(orderline['uom_id'])
+            console.log(orderline)
             var uom_id = orderline['uom_id'];
             if (uom_id) {
                 var selected_uom = this.pos.units_by_id[uom_id];
-                orderline.uom_id = [uom_id, selected_uom.name];
+                orderline['uom_id'] = [uom_id, selected_uom.name];
                 var latest_price = orderline.get_latest_price(selected_uom, orderline.product);
                 let product = orderline.product.product_tmpl_id;
                 let uomPrices = []
