@@ -142,3 +142,4 @@ odoo.define('pos_multi_uom_price.models', function (require) {
     });
 
 });
+

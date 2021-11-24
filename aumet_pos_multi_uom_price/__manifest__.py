@@ -14,7 +14,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/product_view.xml',
-        'views/pos_multi_uom_price_templates.xml',
+        # 'views/pos_multi_uom_price_templates.xml',
     ],
     'qweb': [
         'static/src/xml/multi_uom_price.xml',
