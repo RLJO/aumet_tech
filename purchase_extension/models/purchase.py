@@ -1,6 +1,6 @@
-from odoo import api, fields, models, tools, _
-from odoo.tools import float_is_zero, float_compare, DEFAULT_SERVER_DATETIME_FORMAT
+from odoo import fields, models, _
 from odoo.exceptions import UserError
+from odoo.tools import float_is_zero, float_compare
 
 
 class PurchaseOrder(models.Model):
@@ -26,14 +26,13 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    lot_name = fields.Char(string="Lot", copy=False)
     expiration_date = fields.Datetime('Expiration Date', copy=False)
 
 
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
-
-    extend_lot_name = fields.Char(string="Lot", related='move_id.purchase_line_id.lot_name', store=True)
+    extend_lot_name = fields.Char(
+        'Lot/Serial Number', default=lambda self: self.env['ir.sequence'].next_by_code('stock.lot.serial'), )
     expiration_date = fields.Datetime('Expiration Date',
                                       related='move_id.purchase_line_id.expiration_date', copy=False)
 
@@ -43,7 +42,7 @@ class StockMoveLine(models.Model):
         for ml in self:
             lot_vals_dict = {
                 'company_id': ml.move_id.company_id.id,
-                'name': ml.extend_lot_name if ml.extend_lot_name else ml.lot_name,
+                'name': ml.extend_lot_name,
                 'product_id': ml.product_id.id,
                 'expiration_date': ml.expiration_date if ml.expiration_date else False,
             }

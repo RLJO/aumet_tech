@@ -6,7 +6,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 {
-    "name": "Mail Debrand",
+    "name": "Aumet - Mail Debrand",
     "summary": """Remove Odoo branding in sent emails
     Removes anchor <a href odoo.com togheder with it's parent
     ( for powerd by) form all the templates

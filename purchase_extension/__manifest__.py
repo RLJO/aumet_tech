@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Purchase Extension',
+    'name': 'Aumet - Purchase Extension',
     'category': 'Purchase',
+    "description": "Purchase",
     'version': '1.3',
-    'depends': ['purchase_stock', 'product', 'stock',],
+    'depends': ['purchase_stock', 'product', 'stock'],
     'data': [
         'views/purchase_order_view.xml',
     ],

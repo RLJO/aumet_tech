@@ -1,5 +1,5 @@
 {
-    'name': 'Website Favcion Debrand ',
+    'name': 'Aumet - Website Favcion Debrand ',
     'description': 'Website Favcion Debrand & Digist Template',
     'sequence': 1,
     'version': '14.0.0.0',

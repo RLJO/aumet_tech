@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="claim_report_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <!--<div class="page">
+                        <span t-esc="data"/>
+                    </div>-->
+                    <t t-foreach="data.get('pages', [])" t-as="companyID">
+                        <div class="page">
+                            <h2>
+                                <center>Claim Report for <t t-esc="data['companies'][companyID]"/></center>
+                            </h2>
+                            <div class='row'>
+                                <div style='width:50%;padding-left: 16px;'>
+                                    <strong>From Date</strong>
+                                    <span t-esc="data.get('from_date')"/>
+                                    <br/>
+                                </div>
+                                <div style='width:50%;'>
+                                    <strong>To Date</strong>
+                                    <span t-esc="data.get('to_date')"/>
+                                    <br/>
+                                </div>
+                            </div>
+                            <table class="table table-sm o_main_table">
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Approval Number</th>
+                                    <th>Insurance Form Number</th>
+                                    <th>Insurance Card Number</th>
+                                    <th>Date</th>
+                                    <th>Customer Coverage %</th>
+                                    <th>Invoice Amount</th>
+                                    <th>Contribution Amount</th>
+                                    <th>Required Amount</th>
+                                </tr>
+                                <t t-set="seq" t-value="1"/>
+                                <t t-foreach="data['pages'][companyID]" t-as="invoice">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="seq"/>
+                                        </td>
+                                        <t t-set="seq" t-value="seq+1"/>
+                                        <td>
+                                            <span t-esc="invoice.get('approval_number')"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice.get('form_number')"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice.get('card_number')"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice.get('date')"/>
+                                        </td>
+                                        <td style='text-align: right;'>
+                                            <span t-esc="invoice.get('hi_percentage')"/>
+                                        </td>
+                                        <td style='text-align: right;'>
+                                            <span t-esc="invoice.get('invoice_amount')"/>
+                                        </td>
+                                        <td style='text-align: right;'>
+                                            <span t-esc="invoice.get('cont_amount')"/>
+                                        </td>
+                                        <td style='text-align: right;'>
+                                            <span t-esc="invoice.get('req_amount')"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+
+                        </div>
+                        <p style="page-break-after: always;"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

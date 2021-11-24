@@ -4,7 +4,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 {
-    "name": "Web Responsive",
+    "name": "Aumet - Web Responsive",
     "summary": "Responsive web client, community-supported",
     "version": "14.0.1.0.2",
     "category": "Website",

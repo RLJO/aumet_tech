@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--Customer-->
+        <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new customer in your address book
+              </p><p>
+                Aumet Pharmacy helps you easily track all activities related to a customer.
+              </p>
+            </field>
+        </record>
+        <!--Vendor-->
+        <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+          <field name="name">Vendors</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new supplier in your address book
+              </p><p>
+                 Aumet Pharmacy helps you easily track all activities related to a supplier.
+              </p>
+            </field>
+
+        </record>
+
+
+        <!--Sales >> UP selling-->
+        <record id="sale.action_orders_upselling" model="ir.actions.act_window">
+            <field name="name">Orders to Upsell</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban,activity</field>
+            <field name="domain">[('invoice_status','=','upselling')]</field>
+            <field name="context">{'create': False}</field>
+            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No orders to upsell found.
+              </p><p>
+                An order is to upsell when delivered quantities are above initially
+                ordered quantities, and the invoicing policy is based on ordered quantities.
+              </p><p>
+                As an example, if you sell pre-paid hours of services, Aumet Pharmacy recommends you
+                to sell extra hours when all ordered hours have been consumed.
+              </p>
+            </field>
+        </record>
+
+        <!--Invoice-->
+        <record id="view_account_journal_form_hide" model="ir.ui.view">
+            <field name="name">view.account.journal.form.hide</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='advanced_settings']//group[6]" position="replace"/>
+
+            </field>
+        </record>
+
+        <!-- Create Customer -->
+         <record id="view_partner_form_inherit_aumet" model="ir.ui.view">
+            <field name="name">view.partner.form.inherit.aumet"</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='website']" position="replace">
+                    <field name="website" widget="url" />
+                </xpath>
+            </field>
+        </record>
+
+        <!--Create Company-->
+        <record id="view_company_form_aumet" model="ir.ui.view">
+            <field name="name">view.company.form.aumet"</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='website']" position="replace">
+                    <field name="website" widget="url" />
+                </xpath>
+            </field>
+        </record>
+
+        <!--Hide Cutsomer Perview -->
+        <record id="view_order_form_hide" model="ir.ui.view">
+            <field name="name">view.order.form.hide</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='preview_sale_order']" position="replace"/>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

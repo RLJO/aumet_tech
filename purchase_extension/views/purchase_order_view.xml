@@ -12,7 +12,6 @@
                             confirm="Are you sure to create fast track vendor bill ?"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
-                    <field name="lot_name"/>
                     <field name="expiration_date"/>
                 </xpath>
 

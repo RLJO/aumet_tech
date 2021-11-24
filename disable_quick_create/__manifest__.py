@@ -3,7 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/LGPL).
 
 {
-    'name': 'Disable Quick Create',
+    'name': 'Aumet - Disable Quick Create',
     'category': 'Web',
     'summary': 'Disable "quick create" for all and "create and edit" '
                'for specific models',
