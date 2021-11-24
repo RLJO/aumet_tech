@@ -13,9 +13,9 @@
         </record>
 
         <menuitem action="product_expiry_dashboard"
-            id="stock_picking_type_menu1"
-            parent="stock.menu_stock_root"
-            sequence="1"
-            name="Product Expiry Dashboard"/>
+                  id="stock_picking_type_menu1"
+                  parent="stock.menu_stock_root"
+                  sequence="1"
+                  name="Product Expiry Dashboard"/>
     </data>
 </odoo>

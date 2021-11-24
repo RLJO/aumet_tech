@@ -3,7 +3,7 @@
     <t t-name="ActionpadWidget" t-inherit="point_of_sale.ActionpadWidget" t-inherit-mode="extension" owl="1">
         <xpath expr="//button[hasclass('set-customer')]" position="replace">
             <button class="button set-customer" t-att-class="{'decentered': isLongName}"
-                   t-on-click="trigger('click-customer')" t-att-disabled="env.pos.get_order().get_refund_order()">
+                    t-on-click="trigger('click-customer')" t-att-disabled="env.pos.get_order().get_refund_order()">
                 <t t-if="!env.isMobile"><i class="fa fa-user" role="img" aria-label="Customer" title="Customer" /></t>
                 <t t-if="client">
                     <t t-esc="client.name"/>

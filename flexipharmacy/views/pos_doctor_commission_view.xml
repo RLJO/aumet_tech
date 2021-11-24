@@ -41,7 +41,8 @@
                     <field name="state"/>
                     <field name="invoice_id" invisible="1"/>
                     <field name="is_invoice" invisible="1"/>
-                    <button type="object" string="Cancel" name="cancel_state" attrs="{'invisible':[('state', '!=', 'draft')]}"/>
+                    <button type="object" string="Cancel" name="cancel_state"
+                            attrs="{'invisible':[('state', '!=', 'draft')]}"/>
                 </tree>
             </field>
         </record>

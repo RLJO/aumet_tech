@@ -220,16 +220,20 @@ odoo.define('flexipharmacy.ProductScreen', function(require) {
                     this.showScreen('PaymentScreen');
                 }    
             }
-            // async _clickProduct(event) {
-            //     super._clickProduct(event)
-            // }
-            // async _barcodeProductAction(code) {
-            //     if (!this.env.pos.get_order().get_refund_order()){
-            //         super._barcodeProductAction(code)
-            //     }else{
-            //         return false
-            //     }
-            // }
+            async _clickProduct(event) {
+                if (!this.env.pos.get_order().get_refund_order()){
+                    super._clickProduct(event)
+                }else{
+                    return false
+                }
+            }
+            async _barcodeProductAction(code) {
+                if (!this.env.pos.get_order().get_refund_order()){
+                    super._barcodeProductAction(code)
+                }else{
+                    return false
+                }
+            }
             async _getAddProductOptions(product) {
                 let price_extra = 0.0;
                 let draftPackLotLines, weight, description, packLotLinesToEdit;
@@ -268,7 +272,7 @@ odoo.define('flexipharmacy.ProductScreen', function(require) {
                         var self = this;
                         var utcMoment = moment.utc();
                         var picking_type = this.env.pos.config.picking_type_id[0]
-                        // this.product_lot_and_serial_number(product.id, isAllowOnlyOneLot)
+                        // this.product_lot_and_serial_number(product.id, isAllowOnlyOneLot)   
                         try {
                             var params = {
                                 model: 'stock.production.lot',

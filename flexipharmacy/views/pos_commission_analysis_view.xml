@@ -31,7 +31,8 @@
             <field name="view_mode">graph,pivot</field>
         </record>
 
-        <menuitem name="Commission Analysis" id="pos_menu_commission_analysis" parent="flexipharmacy.main_menu_pos_doctor_commission"
+        <menuitem name="Commission Analysis" id="pos_menu_commission_analysis"
+                  parent="flexipharmacy.main_menu_pos_doctor_commission"
                   action="flexipharmacy.action_pos_commission_analysis_all" sequence="4"/>
 
     </data>

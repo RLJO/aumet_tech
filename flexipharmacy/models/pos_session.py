@@ -129,11 +129,14 @@ class PosSession(models.Model):
                 # Combine invoice receivable lines
                 key = order.partner_id
                 if self.config_id.cash_rounding:
-                    invoice_receivables[key] = self._update_amounts(invoice_receivables[key], {'amount': order.amount_paid}, order.date_order)
+                    invoice_receivables[key] = self._update_amounts(invoice_receivables[key],
+                                                                    {'amount': order.amount_paid}, order.date_order)
                 else:
-                    invoice_receivables[key] = self._update_amounts(invoice_receivables[key], {'amount': order.amount_total}, order.date_order)
+                    invoice_receivables[key] = self._update_amounts(invoice_receivables[key],
+                                                                    {'amount': order.amount_total}, order.date_order)
                 # side loop to gather receivable lines by account for reconciliation
-                for move_line in order.account_move.line_ids.filtered(lambda aml: aml.account_id.internal_type == 'receivable' and not aml.reconciled):
+                for move_line in order.account_move.line_ids.filtered(
+                        lambda aml: aml.account_id.internal_type == 'receivable' and not aml.reconciled):
                     order_account_move_receivable_lines[move_line.account_id.id] |= move_line
             else:
                 order_taxes = defaultdict(tax_amounts)
@@ -550,7 +553,8 @@ class PosSession(models.Model):
             return datetime.now().strftime('%I:%M:%S %p')
 
     def auto_close_pos_session(self):
-        enable_auto_close_session = self.env['ir.config_parameter'].sudo().get_param('flexipharmacy.enable_auto_close_session')
+        enable_auto_close_session = self.env['ir.config_parameter'].sudo().get_param(
+            'flexipharmacy.enable_auto_close_session')
         if enable_auto_close_session:
             session_ids = self.search([('state', 'in', ['opened', 'closing_control'])])
             for cash_control_session in session_ids.filtered(lambda session_id: session_id.config_id.cash_control):
@@ -562,15 +566,16 @@ class PosSession(models.Model):
                     'subtotal': cash_control_session.cash_register_balance_end,
                     'cashbox_id': cashbox_end_id.id,
                 })]
-                cashbox_end_id.write({'cashbox_lines_ids': cash_line,})
+                cashbox_end_id.write({'cashbox_lines_ids': cash_line, })
                 for statement in cash_control_session.statement_ids:
-                    statement.write({'cashbox_end_id': cashbox_end_id.id, 'balance_end_real': cash_control_session.cash_register_balance_end})
+                    statement.write({'cashbox_end_id': cashbox_end_id.id,
+                                     'balance_end_real': cash_control_session.cash_register_balance_end})
                 cash_control_session._compute_cash_balance()
                 cash_control_session.write({'stop_at': fields.Datetime.now()})
                 cash_control_session.action_pos_session_validate()
             for cash_control_session in session_ids.filtered(lambda session_id: not session_id.config_id.cash_control):
                 cash_control_session.action_pos_session_closing_control()
-    
+
     def get_inventory_details(self):
         product_product = self.env['product.product']
         stock_location = self.config_id.picking_type_id.default_location_src_id

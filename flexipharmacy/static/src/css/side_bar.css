@@ -1047,16 +1047,12 @@ input:-internal-autofill-selected{
     margin-left: 5px;
 }
 /*==========================================================================*/
-.return_order_line{
-    width: 122px !important;
-    height: 195px !important;
-}
-.order-management-screen .screen-content .orders .products-widget .product-list-container .product-list .product{
+.order-return-screen .screen-content .orders .products-widget .product-list-container .product-list .product{
     /*padding-left: 5px;*/
     padding-right: 10px;
     height: 195px;
 }
-.order-management-screen .controls .search-box .icon i{
+.order-return-screen .controls .search-box .icon i{
     font-size: 18px;
 }
 .product-list .switch {
@@ -1067,27 +1063,25 @@ input:-internal-autofill-selected{
   float: left;
 }
 
-.order-management-screen .switch input { 
+.order-return-screen .switch input { 
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.order-management-screen .slider {
+.order-return-screen .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 22px;
-  width: 49px;
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
 }
 
-.order-management-screen .slider:before {
+.order-return-screen .slider:before {
   position: absolute;
   content: "";
   height: 16px;
@@ -1114,14 +1108,14 @@ input:checked + .slider:before {
 }
 
 
-.order-management-screen .controls .search-box {
+.order-return-screen .controls .search-box {
     flex: 1;
     position: relative;
     text-align: center;
     margin: 0.2rem;
 }
 
-.order-management-screen .controls .search-box .clear {
+.order-return-screen .controls .search-box .clear {
     position: relative;
     right: 25px;
     cursor: pointer;
@@ -1129,14 +1123,14 @@ input:checked + .slider:before {
     font-size: 13px;
 }
 
-.order-management-screen .controls .search-box .icon {
+.order-return-screen .controls .search-box .icon {
     position: relative;
     left: 25px;
     color: #808080;
     font-size: 13px;
 }
 
-.order-management-screen .controls .search-box input {
+.order-return-screen .controls .search-box input {
     border: 1px solid #cecbcb;
     padding: 10px 30px;
     margin: auto;
@@ -1146,7 +1140,7 @@ input:checked + .slider:before {
     font-size: 13px;
 }
 
-.order-management-screen .controls .search-box input:focus {
+.order-return-screen .controls .search-box input:focus {
     outline: none;
     box-shadow: 0px 0px 0px 2px rgb(153, 153, 255) inset;
     color: rgb(153, 153, 255);
