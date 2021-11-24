@@ -99,6 +99,8 @@ odoo.define('aumet_pod_uom.PackLotLineScreen', function (require) {
                                     return;
                                 }
                                 same_order_line.set_quantity(total_qty)
+                                orderLine.set_custom_uom_id(parseInt(selectedLines[0].uom));
+                                orderLine.apply_uom();
                                 this._closePackLotScreen();
                                 return;
                             } else {
