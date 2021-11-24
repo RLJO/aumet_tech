@@ -8,7 +8,7 @@
              </div>
         </xpath>
         <xpath expr="//div[@class='button next']" position="replace">
-            <div class="button next" t-att-hidden="!currentOrder.is_paid()"
+            <div class="button next"
                  t-on-click="validateOrder(false)">
                 <span class="next_text">Validate</span>
             </div>

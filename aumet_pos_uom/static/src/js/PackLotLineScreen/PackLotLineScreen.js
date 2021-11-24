@@ -11,6 +11,7 @@ odoo.define('aumet_pod_uom.PackLotLineScreen', function (require) {
                 super(...arguments);
                 // onMounted(this.setFirstOneSelected.bind(this));
             }
+
             // setFirstOneSelected() {
             //     var self=this;
             //     if (this.props.serials.length == 1) {
@@ -40,29 +41,30 @@ odoo.define('aumet_pod_uom.PackLotLineScreen', function (require) {
             //     }
             //     // this.render();
             // };
-            _closePackLotScreen(){
+            _closePackLotScreen() {
                 let serialApplied = [];
                 let orderLine = this.env.pos.get_order().get_selected_orderline();
-                if(this.props.orderline){
+                if (this.props.orderline) {
                     orderLine = this.props.orderline;
                 }
                 var has_lot = false;
-                _.each(orderLine.getPackLotLinesToEdit(), function(packLot){
-                    if(packLot.text != ''){
+                _.each(orderLine.getPackLotLinesToEdit(), function (packLot) {
+                    if (packLot.text != '') {
                         serialApplied.push(packLot.text)
                         has_lot = true;
                     }
                 });
-                _.each(this.props.serials, function(serial){
-                    if(!serialApplied.includes(serial.name)){
+                _.each(this.props.serials, function (serial) {
+                    if (!serialApplied.includes(serial.name)) {
                         serial.isSelected = false;
                     }
                 });
-                if (!has_lot){
+                if (!has_lot) {
                     this.env.pos.get_order().remove_orderline(orderLine);
                 }
                 this.close();
             }
+
             applyPackLotLines() {
                 let orderLine = this.env.pos.get_order().get_selected_orderline();
                 if (this.props.orderline) {
@@ -73,10 +75,11 @@ odoo.define('aumet_pod_uom.PackLotLineScreen', function (require) {
                 if (selectedLines.length >= 1) {
                     let modifiedPackLotLines = {};
                     if (this.props.isSingleItem) {
-                        if (selectedLines[0].inputQty > selectedLines[0].location_product_qty) {
+                        if (selectedLines[0].inputQty > selectedLines[0].product_qty) {
                             alert('Invalid Quantity!');
                             return;
                         } else {
+                            let numberOfInputs = selectedLines[0].inputQty;
                             let newPackLotLines = selectedLines.filter(item => item.id).map(item => ({lot_name: item.name}));
                             orderLine.setPackLotLines({modifiedPackLotLines, newPackLotLines});
                             orderLine.set_quantity(selectedLines[0].inputQty);
