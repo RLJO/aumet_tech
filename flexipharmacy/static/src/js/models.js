@@ -248,7 +248,7 @@ odoo.define('flexipharmacy.models', function (require) {
             this.promotion_disc_childId = this.promotion_disc_childId || false;
             this.order_return_qty = this.order_return_qty || 0;
             this.return_qty = this.return_qty || 0;
-            this.price_unit = this.price_unit || 0;
+            // this.price_unit = this.price_unit || 0;
             this.operation_lot_name = this.operation_lot_name || [];
             this.pack_lot_ids = this.pack_lot_ids || false;
             /* POS Promotion Code End */
@@ -307,7 +307,7 @@ odoo.define('flexipharmacy.models', function (require) {
             this.promotion_disc_childId = json.promotion_disc_childId;
             this.order_return_qty = json.order_return_qty;
             this.return_qty = json.return_qty;
-            this.price_unit = json.price_unit;
+            // this.price_unit = json.price_unit;
             this.operation_lot_name = json.operation_lot_name;
             this.pack_lot_ids = json.pack_lot_ids;
             /* POS Promotion Code End */
@@ -367,7 +367,7 @@ odoo.define('flexipharmacy.models', function (require) {
             json.promotion_flag = this.promotion_flag;
             json.promotion_disc_parentId = this.promotion_disc_parentId;
             json.promotion_disc_childId = this.promotion_disc_childId;
-            json.price_unit = this.price_unit;
+            // json.price_unit = this.price_unit;
             json.operation_lot_name = this.operation_lot_name;
             json.pack_lot_ids = this.pack_lot_ids;
             json.return_qty = this.return_qty;

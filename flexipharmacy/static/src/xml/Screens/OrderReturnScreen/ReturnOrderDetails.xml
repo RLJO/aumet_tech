@@ -32,7 +32,7 @@
                         </div>
                         <ul class="orderlines">
                             <t t-foreach="orderlines" t-as="orderline" t-key="orderline.id">
-                                <OrderReturnProductList line="orderline"/>
+                                <OrderReturnProductList line="orderline" ReturnProduct="state.ReturnAllProduct"/>
                             </t>
                         </ul>
                         <!-- <OrderSummary total="total" tax="tax" /> -->

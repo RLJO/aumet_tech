@@ -131,17 +131,19 @@ odoo.define('flexipharmacy.ReturnOrderFetcher', function (require) {
         async _fetch(limit, offset) {
             const { ids, totalCount } = await this._getOrderIdsForCurrentPage(limit, offset);
             const idsNotInCache = ids.filter((id) => !(id in this.cache));
-            if (idsNotInCache.length > 0) {
-                const fetchedOrders = await this._fetchOrders(idsNotInCache);
-                // Cache these fetched orders so that next time, no need to fetch
-                // them again, unless invalidated. See `invalidateCache`.
-                fetchedOrders.forEach((order) => {
-                    this.cache[order.id] = new models.Order(
-                        {},
-                        { pos: this.comp.env.pos, json: order }
-                    );
-                });
-            }
+            // if (idsNotInCache.length > 0) {
+            const fetchedOrders = await this._fetchOrders(idsNotInCache);
+            // Cache these fetched orders so that next time, no need to fetch
+            // them again, unless invalidated. See `invalidateCache`.
+            fetchedOrders.forEach((order) => {
+                this.cache[order.id] = new models.Order(
+                    {},
+                    { pos: this.comp.env.pos, json: order }
+                );
+                console.log("/////////*******--this.cache[order.id]--******/////////",this.cache[order.id])
+                console.log("/////////*******--order--******/////////",order)
+            });
+            // }
             this.totalCount = totalCount;
             return ids.map((id) => this.cache[id]);
         }

@@ -23,14 +23,18 @@
     class OrderReturnProductList extends PosComponent {
         constructor() {
             super(...arguments);
+            this.product = this.env.pos.db.get_product_by_id(this.props.line.product_id)
             var serialProduct = false
-            if (this.props.line.pack_lot_lines.length > 0 && !this.props.line.product.isAllowOnlyOneLot()){
+            var LotProduct = false
+            if (this.props.line.pack_lot_ids.length > 0 && !this.product.isAllowOnlyOneLot()){
                 serialProduct = true
             }
-            this.state = useState({ProductQty: 0, LotProduct: this.props.line.product.isAllowOnlyOneLot(), serialProduct: serialProduct})
-            this.props.line.return_qty = 0
+            if (this.props.line.pack_lot_ids.length > 0 && this.product.isAllowOnlyOneLot()){
+                LotProduct = true
+            }
+            this.state = useState({ProductQty: 0, return_qty:this.props.line.return_qty, LotProduct: LotProduct, serialProduct: serialProduct})
         }
-
+        
         QuantityValidation(e) {
             var prevent = false
             if(e.key == '!' || e.key == '@' || e.key == '#' || e.key == '$' || e.key == '%' || e.key == '^' || e.key == '&' || e.key == '*' || e.key == '(' || e.key == ')') {
@@ -47,7 +51,7 @@
         }
         get imageUrl() {
             // const lines = this.env.pos.db.get_product_by_id(this.props.product_id);
-            const lines = this.props.line.product;
+            const lines = this.env.pos.db.get_product_by_id(this.props.line.product_id);
             return `/web/image?model=product.product&field=image_128&id=${lines.id}&write_date=${lines.write_date}&unique=1`;
         }
         get Orderqty() {
@@ -59,22 +63,25 @@
         }
         addQty(event){
             if (!this.props.ReturnProduct){
-                if (this.props.line.return_qty >= this.props.line.order_return_qty){
-                    this.props.line.return_qty = this.props.line.order_return_qty
+                if (this.state.return_qty >= this.props.line.order_return_qty){
+                    this.state.return_qty = this.props.line.order_return_qty
                 }else{
-                    this.props.line.return_qty += 1
+                    this.state.return_qty += 1
                 }
+                this.props.line.return_qty = this.state.return_qty
+                console.log("/////////////return_qty/////////",this.props.line.return_qty)
             }
         }
         removeQty(){
             if (!this.props.ReturnProduct){
-                if (this.props.line.return_qty <= 0){
+                if (this.state.return_qty <= 0){
                     console.log('removeQty->', this.props.line)
-                    this.props.line.return_qty = 0
+                    this.state.return_qty = 0
                 }else{
                     console.log('')
-                    this.props.line.return_qty -= 1
+                    this.state.return_qty -= 1
                 }
+                this.props.line.return_qty = this.state.return_qty
             }
         }
     }

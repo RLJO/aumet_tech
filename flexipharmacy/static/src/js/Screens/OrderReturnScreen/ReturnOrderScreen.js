@@ -105,12 +105,20 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
             ReturnOrderFetcher.setPage(1);
             ReturnOrderFetcher.fetch();
         }
-        _onClickOrder({ detail: clickedOrder }) {
-//            if (!clickedOrder || clickedOrder.locked) {
-                this.orderManagementContext.selectedOrder = clickedOrder;
-//            } else {
-//                this._setOrder(clickedOrder);
-//            }
+        async _onClickOrder({ detail: clickedOrder }) {
+            console.log("///////******---clickedOrder--******////////",clickedOrder)
+            var self = this;
+            if (clickedOrder){
+                var params = {
+                    model: 'pos.order',
+                    method: 'export_for_ui_custom',
+                    args: [clickedOrder.backendId],
+                }
+                var order_lines = await self.rpc(params, {async: false}).then(function(report_html){
+                    return report_html
+                });
+                this.orderManagementContext.selectedOrder = order_lines;
+            }
         }
         /**
          * @param {models.Order} order
@@ -124,23 +132,19 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
         }
         ProcessReturnOrder() {
             var self = this
-            this.state.orderlines = this.orderManagementContext.selectedOrder.orderlines.models
-            this.state.orders = this.orderManagementContext.selectedOrder
-            console.log("/////////*******--1111---*****//////////",this.state.orderlines)
-            console.log("/////////*******--0000---*****//////////",this.state.orders)
+            this.state.orderlines = this.orderManagementContext.selectedOrder[0].lines
+            this.state.orders = this.orderManagementContext.selectedOrder[0]
             if (this.state.orderlines && this.state.orderlines.length > 0){
                 var order = self.env.pos.get_order()
                 var lines = order.get_orderlines();
                 if(lines.length > 0){
                     self.orderIsEmpty(order);
                 }
-                var partner_id = this.state.orders.get_client()
+                var partner_id = this.env.pos.db.get_partner_by_id(this.state.orders.partner_id)
                 this.env.pos.get_order().set_client(partner_id);
-                var line_datas = []
                 _.each(this.state.orderlines, function (lines) {
                     if (lines.return_qty > 0){
-                        var line_data = {}
-                        var product_id = lines.product
+                        var product_id = self.env.pos.db.get_product_by_id(lines.product_id)
                         var quantity = 0
                         if (lines.return_qty > lines.order_return_qty){
                             quantity = -lines.order_return_qty
@@ -173,19 +177,9 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
                                 price: price_unit,
                             });
                         }
-                        line_data = {
-                            'id': lines.id,
-                            'return_qty': lines.return_qty,
-                            'order_return_qty': lines.order_return_qty,
-                            'select_operation_lot_name': lines.select_operation_lot_name,
-                        }
-                        line_datas.push(line_data)
                     }
                 });
-                // this.state.orders['lines'] = line_ids
-                this.env.pos.get_order().set_refund_ref_order({'name': this.state.orders.name})
-                // this.env.pos.get_order().set_refund_ref_order(this.state.orders)
-                this.env.pos.get_order().set_refund_ref_orderline(line_datas)
+                this.env.pos.get_order().set_refund_ref_order(this.state.orders[0])
                 if (this.env.pos.get_order().get_orderlines() && this.env.pos.get_order().get_orderlines().length > 0){
                     this.env.pos.get_order().set_refund_order(true)
                 }

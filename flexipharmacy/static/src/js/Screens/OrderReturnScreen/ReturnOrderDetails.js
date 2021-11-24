@@ -19,7 +19,13 @@ odoo.define('flexipharmacy.ReturnOrderDetails', function (require) {
             return this.props.order;
         }
         get orderlines() {
-            return this.order ? this.order.orderlines.models : [];
+            var lines = []
+            for (let line of this.order[0].lines) {
+                line[2]['return_qty'] = 0
+                lines.push(line[2]);
+            }
+            console.log("//////*****----*****//////",lines)
+            return this.order ? lines : [];
         }
         get total() {
             return this.env.pos.format_currency(this.order ? this.order.get_total_with_tax() : 0);
@@ -28,10 +34,10 @@ odoo.define('flexipharmacy.ReturnOrderDetails', function (require) {
             return this.env.pos.format_currency(this.order ? this.order.get_total_tax() : 0)
         }
         ReturnAllProductQty() {
-            if (this.states.ReturnAllProduct){
-                for (let lines of this.orderlines) {
-                    var product_id = this.env.pos.db.get_product_by_id(lines.product)
-                    const isAllowOnlyOneLot = lines.product.isAllowOnlyOneLot();
+            if (this.state.ReturnAllProduct){
+                for (let lines of this.state.orderlines) {
+                    var product_id = this.env.pos.db.get_product_by_id(lines.product_id)
+                    const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
                     if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
                         lines['select_operation_lot_name'] = []
                         lines.return_qty = 0
@@ -44,9 +50,9 @@ odoo.define('flexipharmacy.ReturnOrderDetails', function (require) {
                     }
                 }
             }else{
-                for (let lines of this.orderlines) {
-                    var product_id = this.env.pos.db.get_product_by_id(lines.product)
-                    const isAllowOnlyOneLot = lines.product.isAllowOnlyOneLot();
+                for (let lines of this.state.orderlines) {
+                    var product_id = this.env.pos.db.get_product_by_id(lines.product_id)
+                    const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
                     if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
                         lines['select_operation_lot_name'] = lines.operation_lot_name
                         lines.return_qty = lines.operation_lot_name.length

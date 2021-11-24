@@ -157,6 +157,7 @@ class PosOrder(models.Model):
         return lines_data
 
     def export_for_ui_custom(self):
+        print("/////****--self--***///////",self)
         return self.mapped(self._export_for_ui) if self else []
 
     def _export_for_ui(self, order):
