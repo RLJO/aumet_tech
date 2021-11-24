@@ -113,8 +113,8 @@ class PosOrder(models.Model):
         'Rating', default='0', index=True)
     ref_doctor_id = fields.Many2one('res.partner', string='Reference Doctor', readonly="1")
     pos_return_order = fields.Integer(compute='_compute_pos_return_order_count')
-    # remaining_lines = fields.One2many('pos.order.line', 'order_id', string='Remaining Order Lines',
-    #                                   states={'draft': [('readonly', False)]}, readonly=True, copy=True)
+    remaining_lines = fields.One2many('pos.order.line', 'order_id', string='Remaining Order Lines',
+                                      states={'draft': [('readonly', False)]}, readonly=True, copy=True)
     sale_commission_ids = fields.One2many('pos.order.commission', 'pos_order_id', string="Doctor Commission")
     commission_calculation = fields.Selection([
         ('product', 'Product'),
