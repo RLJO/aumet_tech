@@ -10,65 +10,109 @@
                     <t t-foreach="data.get('pages', [])" t-as="companyID">
                         <div class="page">
                             <h2>
-                                <center>Claim Report for <t t-esc="data['companies'][companyID]"/></center>
+                                <center>Claim Report for
+                                    <t t-esc="data['companies'][companyID]"/>
+                                </center>
                             </h2>
                             <div class='row'>
-                                <div style='width:50%;padding-left: 16px;'>
+                                <div style='width:50%;'>
                                     <strong>From Date</strong>
                                     <span t-esc="data.get('from_date')"/>
                                     <br/>
-                                </div>
-                                <div style='width:50%;'>
                                     <strong>To Date</strong>
                                     <span t-esc="data.get('to_date')"/>
                                     <br/>
+
                                 </div>
                             </div>
-                            <table class="table table-sm o_main_table">
+                            <table class="table table-sm o_main_table" style="width: 100%">
+                                <colgroup>
+                                    <col span="1" style="width: 2%;"/>
+                                    <col span="1" style="width: 15%;"/>
+                                    <col span="1" style="width: 10%;"/>
+                                    <col span="1" style="width: 9%;"/>
+                                    <col span="1" style="width: 9%;"/>
+                                    <col span="1" style="width: 9%;"/>
+                                    <col span="1" style="width: 9%;"/>
+                                    <col span="1" style="width: 9%;"/>
+                                    <col span="1" style="width: 9%;"/>
+                                    <col span="1" style="width: 9%;"/>
+                                    <col span="1" style="width: 10%;"/>
+
+                                </colgroup>
                                 <tr>
-                                    <th>Number</th>
-                                    <th>Approval Number</th>
-                                    <th>Insurance Form Number</th>
-                                    <th>Insurance Card Number</th>
-                                    <th>Date</th>
-                                    <th>Customer Coverage %</th>
-                                    <th>Invoice Amount</th>
-                                    <th>Contribution Amount</th>
-                                    <th>Required Amount</th>
+                                    <th style='text-align: center;'>#</th>
+                                    <th style='text-align: center;'>Invoice</th>
+                                    <th style='text-align: center;'>Date</th>
+                                    <th style='text-align: center;'>Card Number</th>
+                                    <th style='text-align: center;'>Customer Coverage %</th>
+                                    <th style='text-align: center;'>Form Number</th>
+                                    <th style='text-align: center;'>Approval Number</th>
+                                    <th style='text-align: center;'>Untaxed Amount</th>
+                                    <th style='text-align: center;'>Invoice Amount</th>
+                                    <th style='text-align: center;'>Contribution Amount</th>
+                                    <th style='text-align: center;'>Required Amount</th>
                                 </tr>
                                 <t t-set="seq" t-value="1"/>
+                                <t t-set="total_req_amount" t-value="0"/>
                                 <t t-foreach="data['pages'][companyID]" t-as="invoice">
                                     <tr>
-                                        <td>
+                                        <td style='text-align: center;'>
                                             <span t-esc="seq"/>
                                         </td>
                                         <t t-set="seq" t-value="seq+1"/>
-                                        <td>
-                                            <span t-esc="invoice.get('approval_number')"/>
+
+                                        <td style='text-align: center;'>
+                                            <span t-esc="invoice.get('name')"/>
                                         </td>
-                                        <td>
-                                            <span t-esc="invoice.get('form_number')"/>
-                                        </td>
-                                        <td>
-                                            <span t-esc="invoice.get('card_number')"/>
-                                        </td>
-                                        <td>
+                                        <td style='text-align: center;'>
                                             <span t-esc="invoice.get('date')"/>
                                         </td>
-                                        <td style='text-align: right;'>
+                                        <td style='text-align: center;'>
+                                            <span t-esc="invoice.get('card_number')"/>
+                                        </td>
+                                        <td style='text-align: center;'>
                                             <span t-esc="invoice.get('hi_percentage')"/>
                                         </td>
-                                        <td style='text-align: right;'>
+                                        <td style='text-align: center;'>
+                                            <span t-esc="invoice.get('form_number')"/>
+                                        </td>
+                                        <td style='text-align: center;'>
+                                            <span t-esc="invoice.get('approval_number')"/>
+                                        </td>
+
+                                        <td style='text-align: center;'>
+                                            <span t-esc="invoice.get('invoice_untaxed_amount')"/>
+                                        </td>
+                                        <td style='text-align: center;'>
                                             <span t-esc="invoice.get('invoice_amount')"/>
                                         </td>
-                                        <td style='text-align: right;'>
+                                        <td style='text-align: center;'>
                                             <span t-esc="invoice.get('cont_amount')"/>
                                         </td>
-                                        <td style='text-align: right;'>
+                                        <td style='text-align: center;  font-weight: bold; '>
                                             <span t-esc="invoice.get('req_amount')"/>
                                         </td>
+                                        <t t-set="total_req_amount"
+                                           t-value="total_req_amount+invoice.get('req_amount')"/>
+
                                     </tr>
                                 </t>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style='text-align: center;  font-weight: bold; '>Total:</td>
+                                    <td style='text-align: center;  font-weight: bold; '>
+                                        <t t-esc="total_req_amount"/>
+                                    </td>
+                                </tr>
                             </table>
 
                         </div>

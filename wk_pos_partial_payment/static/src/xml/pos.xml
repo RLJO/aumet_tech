@@ -19,7 +19,7 @@
             <t t-if="env.pos.config.partial_payment">
             <span class="print-serial-label">Deactivate Insurance</span>
                 <label class="switch">
-                    <input type="checkbox"  id="deactivate_insurance"/>
+                    <input type="checkbox"  id="deactivate_insurance" t-att-checked="true"/>
                     <span class="slider round"></span>
                 </label>
             </t>

@@ -40,11 +40,13 @@ class ClaimReport(models.TransientModel):
                 vals['companies'][company_id] = invoice.partner_id.parent_id.name
 
             inv_data = {
+                'name': invoice.name,
                 'approval_number': invoice.partial_payment_remark,
                 'form_number': invoice.form_number,
                 'card_number': invoice.partner_id.member_number,
                 'hi_percentage': invoice.partner_id.hi_percentage,
                 'date': invoice.invoice_date,
+                'invoice_untaxed_amount': invoice.amount_untaxed,
                 'invoice_amount': invoice.amount_total,
                 'cont_amount': round(invoice.amount_total - invoice.amount_residual, 2),
                 'req_amount': invoice.amount_residual
@@ -89,31 +91,37 @@ class ClaimReport(models.TransientModel):
             worksheet.write(4, 4, "To Date", bold)
             worksheet.write(4, 5, str(vals.get('to_date')))
 
-            worksheet.write(6, 0, "Number", bold)
-            worksheet.write(6, 1, "Approval Number", bold)
-            worksheet.write(6, 2, "Insurance Form Number", bold)
+            worksheet.write(6, 0, "#", bold)
+            worksheet.write(6, 1, "Invoice", bold)
+            worksheet.write(6, 2, "Date", bold)
             worksheet.write(6, 3, "Insurance Card Number", bold)
-            worksheet.write(6, 4, "Date", bold)
-            worksheet.write(6, 5, "Customer Coverage %", bold)
-            worksheet.write(6, 6, "Invoice Amount", bold)
-            worksheet.write(6, 7, "Contribution Amount", bold)
-            worksheet.write(6, 8, "Required Amount", bold)
+            worksheet.write(6, 4, "Customer Coverage %", bold)
+            worksheet.write(6, 5, "Insurance Form Number", bold)
+            worksheet.write(6, 6, "Approval Number", bold)
+            worksheet.write(6, 7, "Untaxed Amount", bold)
+            worksheet.write(6, 8, "Invoice Amount", bold)
+            worksheet.write(6, 9, "Contribution Amount", bold)
+            worksheet.write(6, 10, "Required Amount", bold)
             row_index = 7
             count = 1
+            req_amount_sum = 0
             for invoice in vals['pages'][company]:
                 worksheet.write(row_index, 0, str(count))
-                worksheet.write(row_index, 1, str(invoice['approval_number'] or ''))
-                worksheet.write(row_index, 2, str(invoice['form_number'] or ''))
+                worksheet.write(row_index, 1, str(invoice['name'] or ''))
+                worksheet.write(row_index, 2, str(invoice['date']))
                 worksheet.write(row_index, 3, str(invoice['card_number'] or ''))
-                worksheet.write(row_index, 4, str(invoice['date']))
-                worksheet.write(row_index, 5, str(invoice['hi_percentage']))
-                worksheet.write(row_index, 6, str(invoice['invoice_amount']))
-                worksheet.write(row_index, 7, str(invoice['cont_amount']))
-                worksheet.write(row_index, 8, str(invoice['req_amount']))
+                worksheet.write(row_index, 4, str(invoice['hi_percentage']))
+                worksheet.write(row_index, 5, str(invoice['form_number'] or ''))
+                worksheet.write(row_index, 6, str(invoice['approval_number'] or ''))
+                worksheet.write(row_index, 7, str(invoice['invoice_untaxed_amount']))
+                worksheet.write(row_index, 8, str(invoice['invoice_amount']))
+                worksheet.write(row_index, 9, str(invoice['cont_amount']))
+                worksheet.write(row_index, 10, str(invoice['req_amount']), bold)
+                req_amount_sum += invoice['req_amount']
                 row_index += 1
                 count += 1
-
-
+            worksheet.write(row_index, 9, 'Total', bold)
+            worksheet.write(row_index, 10, str(req_amount_sum), bold)
         if not sheets:
             worksheet = workbook.add_sheet('Report')
 

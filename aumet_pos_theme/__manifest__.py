@@ -36,7 +36,7 @@
         'static/src/xml/ChromeWidgets/PharmacyDetailSidebar.xml',
 
         'static/src/xml/Screens/PaymentScreen/PaymentScreen.xml',
-        'static/src/xml/Screens/PaymentScreen/PaymentScreenStatus.xml',
+        # 'static/src/xml/Screens/PaymentScreen/PaymentScreenStatus.xml',
 
     ],
     "auto_install": False,

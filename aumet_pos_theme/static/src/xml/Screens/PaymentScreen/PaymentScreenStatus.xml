@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-<t t-name="PaymentScreenStatus" t-inherit="point_of_sale.PaymentScreenStatus" t-inherit-mode="extension" owl="1">
+<!--<t t-name="PaymentScreenStatus" t-inherit="point_of_sale.PaymentScreenStatus" t-inherit-mode="extension" owl="1">
     <xpath expr="//div[hasclass('payment-status-container')]" position="replace">
         <div class="payment-status-container" >
             <div>
@@ -30,5 +30,5 @@
             </div>
         </div>
     </xpath>
-</t>
+</t>-->
 </templates>

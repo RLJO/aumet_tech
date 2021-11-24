@@ -41,9 +41,9 @@ odoo.define('wk_pos_partial_payment.models', function (require) {
             var client = this.get('client');
 
             var deactivate_insurance = $('#deactivate_insurance').is(":checked")
-            if (deactivate_insurance) {
-                $('.partial-payment-remark').hide();
-            }
+            // if (deactivate_insurance) {
+            //     $('.partial-payment-remark').hide();
+            // }
             if (client && client.hi_percentage > 0 && !deactivate_insurance) {
                 var new_amount = parseFloat((this.get_total_with_tax() * parseInt(client.hi_percentage)) / 100.0);
                 newPaymentline.set_amount(new_amount);

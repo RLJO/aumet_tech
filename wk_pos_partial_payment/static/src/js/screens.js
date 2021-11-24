@@ -16,10 +16,10 @@ odoo.define('wk_pos_partial_payment.screens', function (require) {
             mounted(){
                 super.mounted();
                 var order = this.env.pos.get_order();
-                if(order && order.get_total_with_tax() > 0)
-                    $('.partial-payment-remark').show();
-                else
-                    $('.partial-payment-remark').hide();
+                // if(order && order.get_total_with_tax() > 0)
+                //     $('.partial-payment-remark').show();
+                // else
+                //     $('.partial-payment-remark').hide();
                 this.check_partial_payment_criteria();
             }
             focus_in_description(event){
