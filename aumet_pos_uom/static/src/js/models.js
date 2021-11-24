@@ -84,19 +84,16 @@ odoo.define('aumet_pos_uom.models', function (require) {
 
 
                 var selectedLine = this.get_selected_orderline();
-                var all_order_line = this.orderlines.models
-                var same_order_line
-
                 var serials = pro_serials;
                 const isSingleItem = product.isAllowOnlyOneLot();
                 if (serials.length == 1 && selectedLine) {
                     var serial = serials[0];
                     var prod_uom = 0;
                     var prod_qty = 1;
-                    var foundUOM = false;
                     var uoms = this.pos.db.get_uoms(serial);
-                    if (serial['location_product_qty'] <= 1) {
+                    if (serial['location_product_qty'] < 1) {
                         if (uoms.length > 1) {
+                            var foundUOM = false;
                             for (var ind in uoms) {
                                 var uom_id = uoms[ind].uom_id[0];
                                 var uom_obj = this.pos.units_by_id[uom_id];
@@ -122,32 +119,9 @@ odoo.define('aumet_pos_uom.models', function (require) {
                         selectedLine.apply_uom();
                         return true;
                     }
-                    let selectedLines = [];
-                    selectedLines = serials[0];
-                    _.each(all_order_line, function (item) {
-                        if (item.product.id == selectedLine.product.id) {
-                            _.each(item.pack_lot_lines.models, function (lot_id) {
-                                if (lot_id.attributes.lot_name === selectedLines.name) {
-                                    same_order_line = item
-                                }
-                            });
-                        }
-                    });
-
-                    if (same_order_line) {
-                        selectedLine.set_quantity('remove')
-                        var total_qty = Number(same_order_line.quantity) + Number(selectedLines.inputQty)
-                        if (Number(total_qty) > Number(selectedLines.location_product_qty)) {
-                            alert('Invalid Quantity!');
-                            return;
-                        }
-                        same_order_line.set_quantity(total_qty)
-                        return;
-                    } else {
-                        let newPackLotLines = serials.filter(item => item.id).map(item => ({lot_name: item.name}));
-                        selectedLine.setPackLotLines({modifiedPackLotLines, newPackLotLines});
-                        return;
-                    }
+                    let newPackLotLines = serials.filter(item => item.id).map(item => ({lot_name: item.name}));
+                    selectedLine.setPackLotLines({modifiedPackLotLines, newPackLotLines});
+                    return true;
                 }
                 return false;
             }
