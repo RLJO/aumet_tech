@@ -59,7 +59,6 @@ odoo.define('flexipharmacy.ProductScreen', function(require) {
                              if(serials[i].remaining_qty > 0){
                                 serials[i]['isSelected'] = false;
                                 serials[i]['inputQty'] = 1;
-                                serials[i]['uom'] = 1;
                                 if(serials[i].expiration_date){
                                     let localTime =  moment.utc(serials[i].expiration_date).toDate();
                                     serials[i]['expiration_date'] = moment(localTime).locale('en').format('YYYY-MM-DD hh:mm A');
@@ -271,7 +270,6 @@ odoo.define('flexipharmacy.ProductScreen', function(require) {
                     }
                     if(this.env.pos.config.enable_pos_serial) {
                         var self = this;
-                        self.state.serials = [];
                         var utcMoment = moment.utc();
                         var picking_type = this.env.pos.config.picking_type_id[0]
                         // this.product_lot_and_serial_number(product.id, isAllowOnlyOneLot)   
@@ -287,7 +285,6 @@ odoo.define('flexipharmacy.ProductScreen', function(require) {
                                         if(serials[i].remaining_qty > 0){
                                             serials[i]['isSelected'] = false;
                                             serials[i]['inputQty'] = 1;
-                                            serials[i]['uom'] = serials[i].product_uom_id[0];
                                             if(serials[i].expiration_date){
                                                 let localTime =  moment.utc(serials[i].expiration_date).toDate();
                                                 serials[i]['expiration_date'] = moment(localTime).locale('en').format('YYYY-MM-DD hh:mm A');
@@ -306,10 +303,7 @@ odoo.define('flexipharmacy.ProductScreen', function(require) {
                                     self.state.serials.sort(function(a,b){
                                         return (b.expiration_date) - (a.expiration_date);
                                     });
-                                    // self.showScreen('PackLotLineScreen', {isSingleItem : isAllowOnlyOneLot, serials : self.state.serials});
-                                    if(self.state.serials.length > 1){
-                                        self.showScreen('PackLotLineScreen', {isSingleItem : isAllowOnlyOneLot, serials : self.state.serials});
-                                    }
+                                    self.showScreen('PackLotLineScreen', {isSingleItem : isAllowOnlyOneLot, serials : self.state.serials});
                                 }
                             });
                         } catch (error) {
