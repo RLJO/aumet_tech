@@ -76,7 +76,7 @@
                         </field>
                     </page>
                 </xpath>
-                <xpath expr="//page[@name='products']" position="after">
+                <!--<xpath expr="//page[@name='products']" position="after">
                     <page string="Remaining Product" attrs="{'invisible':[('pos_return_order', '=', 0)]}">
                         <field name="remaining_lines" priority='100'>
                             <tree>
@@ -89,7 +89,7 @@
                             </tree>
                         </field>
                     </page>
-                </xpath>
+                </xpath>-->
             </field>
         </record>
 

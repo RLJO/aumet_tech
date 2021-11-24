@@ -61,8 +61,14 @@
                                             <div class="client-details-right">
                                                 <div class="client-detail">
                                                     <span class="date" style="font-weight:bold">Expire Date</span>
-                                                    <input class="detail client-lang needsclick" type="date" t-model="state.ExpireDate" t-ref="text_expire_date"  placeholder="ExpireDate" id="text_expire_date" name="points" t-if="env.pos.config.default_exp_date &lt;= 0"/>
-                                                    <input class="detail client-lang needsclick" type="text" t-model="state.ExpireDate" t-ref="text_expire_date"  placeholder="ExpireDate" id="text_expire_date" name="points" disabled="1" t-if="env.pos.config.default_exp_date &gt; 0"/>
+                                                    <input class="detail client-lang needsclick" type="date"
+                                                           t-model="state.ExpireDate" t-ref="text_expire_date"
+                                                           placeholder="ExpireDate" id="text_expire_date" name="points"
+                                                           t-if="env.pos.config.default_exp_date &lt;= 0"/>
+                                                    <input class="detail client-lang needsclick" type="text"
+                                                           t-model="state.ExpireDate" t-ref="text_expire_date"
+                                                           placeholder="ExpireDate" id="text_expire_date" name="points"
+                                                           disabled="1" t-if="env.pos.config.default_exp_date &gt; 0"/>
                                                 </div>
                                                 <div class="client-detail">
                                                     <span class="label">Card Type</span>

@@ -43,16 +43,16 @@ class POSDoctorCommissionPayment(models.TransientModel):
         for record in commission_browse:
             if record.doctor_id.id not in data:
                 data[record.doctor_id.id] = [{'name': record.doctor_id.name,
-                                             'source_document': record.name,
-                                             'date': record.commission_date,
-                                             'amount': record.amount,
-                                             'state': record.state}]
+                                              'source_document': record.name,
+                                              'date': record.commission_date,
+                                              'amount': record.amount,
+                                              'state': record.state}]
             else:
                 data[record.doctor_id.id].append({'name': record.doctor_id.name,
-                                                 'source_document': record.name,
-                                                 'date': record.commission_date,
-                                                 'amount': record.amount,
-                                                 'state': record.state})
+                                                  'source_document': record.name,
+                                                  'date': record.commission_date,
+                                                  'amount': record.amount,
+                                                  'state': record.state})
         data_new.update({'commission': data})
         return self.env.ref('flexipharmacy.pos_doctor_payment_report').report_action(self, data=data_new)
 

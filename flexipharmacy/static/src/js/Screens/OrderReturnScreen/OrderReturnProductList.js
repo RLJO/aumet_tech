@@ -1,10 +1,11 @@
-    odoo.define('flexipharmacy.OrderReturnProductList', function(require) {
+    odoo.define('point_of_sale.OrderReturnProductList', function(require) {
     'use strict';
 
     const { useState } = owl.hooks;
     const { useAutofocus, useListener } = require('web.custom_hooks');
     const PosComponent = require('point_of_sale.PosComponent');
     const Registries = require('point_of_sale.Registries');
+    const OrderFetcher = require('point_of_sale.OrderFetcher');
     const contexts = require('point_of_sale.PosContext');
 
 
@@ -23,18 +24,14 @@
     class OrderReturnProductList extends PosComponent {
         constructor() {
             super(...arguments);
-            this.product = this.env.pos.db.get_product_by_id(this.props.line.product_id)
+            this.product = this.env.pos.db.get_product_by_id(this.props.line.product_id) 
             var serialProduct = false
-            var LotProduct = false
             if (this.props.line.pack_lot_ids.length > 0 && !this.product.isAllowOnlyOneLot()){
                 serialProduct = true
             }
-            if (this.props.line.pack_lot_ids.length > 0 && this.product.isAllowOnlyOneLot()){
-                LotProduct = true
-            }
-            this.state = useState({ProductQty: 0, return_qty:this.props.line.return_qty, LotProduct: LotProduct, serialProduct: serialProduct})
+            this.state = useState({ProductQty: 0, LotProduct: this.product.isAllowOnlyOneLot(), serialProduct: serialProduct})
         }
-        
+
         QuantityValidation(e) {
             var prevent = false
             if(e.key == '!' || e.key == '@' || e.key == '#' || e.key == '$' || e.key == '%' || e.key == '^' || e.key == '&' || e.key == '*' || e.key == '(' || e.key == ')') {
@@ -50,7 +47,6 @@
             }
         }
         get imageUrl() {
-            // const lines = this.env.pos.db.get_product_by_id(this.props.product_id);
             const lines = this.env.pos.db.get_product_by_id(this.props.line.product_id);
             return `/web/image?model=product.product&field=image_128&id=${lines.id}&write_date=${lines.write_date}&unique=1`;
         }
@@ -63,25 +59,20 @@
         }
         addQty(event){
             if (!this.props.ReturnProduct){
-                if (this.state.return_qty >= this.props.line.order_return_qty){
-                    this.state.return_qty = this.props.line.order_return_qty
+                if (this.props.line.return_qty >= this.props.line.order_return_qty){
+                    this.props.line.return_qty = this.props.line.order_return_qty
                 }else{
-                    this.state.return_qty += 1
+                    this.props.line.return_qty += 1
                 }
-                this.props.line.return_qty = this.state.return_qty
-                console.log("/////////////return_qty/////////",this.props.line.return_qty)
             }
         }
         removeQty(){
             if (!this.props.ReturnProduct){
-                if (this.state.return_qty <= 0){
-                    console.log('removeQty->', this.props.line)
-                    this.state.return_qty = 0
+                if (this.props.line.return_qty <= 0){
+                    this.props.line.return_qty = 0
                 }else{
-                    console.log('')
-                    this.state.return_qty -= 1
+                    this.props.line.return_qty -= 1
                 }
-                this.props.line.return_qty = this.state.return_qty
             }
         }
     }
