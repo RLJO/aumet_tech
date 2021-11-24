@@ -34,7 +34,6 @@ odoo.define('pos_serial.OrderWidgetInh', function(require) {
                                      if(serials[i].remaining_qty > 0){
                                         serials[i]['isSelected'] = false;
                                         serials[i]['inputQty'] = 1;
-                                        serials[i]['uom'] = serials[i].product_uom_id[0];
                                         if(serials[i].expiration_date){
                                             let localTime =  moment.utc(serials[i].expiration_date).toDate();
                                             serials[i]['expiration_date'] = moment(localTime).locale('en').format('YYYY-MM-DD hh:mm A');
