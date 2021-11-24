@@ -1,7 +1,7 @@
 odoo.define('pos_multi_uom_price.models', function (require) {
     "use strict";
 
-    var models = require('flexipharmacy.models');
+    var models = require('point_of_sale.models');
 
     var DB = require('point_of_sale.DB');
     DB.include({
