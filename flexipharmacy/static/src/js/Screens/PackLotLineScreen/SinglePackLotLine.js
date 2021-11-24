@@ -13,7 +13,6 @@ odoo.define('point_of_sale.SinglePackLotLine', function(require) {
                e.preventDefault();
             }
         }
-
         onClickPlus(serial) {
             if(this.props.isSingleItem){
                 if(this.props.serial.isSelected){
