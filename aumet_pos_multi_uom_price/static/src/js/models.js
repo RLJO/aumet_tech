@@ -115,7 +115,7 @@ odoo.define('pos_multi_uom_price.models', function (require) {
 
             if (uom_id) {
                 var selected_uom = this.pos.units_by_id[uom_id];
-                orderline.uom_id = [uom_id, selected_uom.name];
+                orderline['uom_id'] = [uom_id, selected_uom.name];
                 var latest_price = orderline.get_latest_price(selected_uom, orderline.product);
                 // let product = orderline.product.product_tmpl_id;
                 // let uomPrices = []
