@@ -17,6 +17,7 @@ from itertools import groupby
 from odoo.exceptions import ValidationError
 
 
+
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
