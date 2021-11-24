@@ -1,7 +1,7 @@
 odoo.define('aumet_pod_uom.SinglePackLotLine', function (require) {
     'use strict';
 
-    const SinglePackLotLine = require('point_of_sale.SinglePackLotLine');
+    const SinglePackLotLine = require('flexipharmacy.SinglePackLotLine');
     const Registries = require('point_of_sale.Registries');
 
     const SinglePackLotLineInh = (SinglePackLotLine) =>

@@ -1,7 +1,7 @@
 odoo.define('aumet_pod_uom.PackLotLineScreen', function (require) {
     'use strict';
 
-    const PackLotLineScreen = require('point_of_sale.PackLotLineScreen');
+    const PackLotLineScreen = require('flexipharmacy.PackLotLineScreen');
     const Registries = require('point_of_sale.Registries');
     // const { onMounted } = owl.hooks;
 
