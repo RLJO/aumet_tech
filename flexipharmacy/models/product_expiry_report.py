@@ -21,7 +21,8 @@ class ProductExpiryReport(models.Model):
     _name = "product.expiry.report"
     _description = "Product Expiry Report"
 
-    num_expiry_days = fields.Integer(string="Product Expiry In Next")
+    from_date = fields.Date('From Date')
+    to_date = fields.Date('To Date')
     location_ids = fields.Many2many('stock.location', string="Location",
                                     domain=[('usage', '=', 'internal')])
     category_ids = fields.Many2many('product.category', string="Category")
