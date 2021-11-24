@@ -17,6 +17,7 @@ from itertools import groupby
 from odoo.exceptions import ValidationError
 
 
+
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
@@ -136,7 +137,7 @@ class ProductProduct(models.Model):
         today = datetime.today()
         today_end_date = datetime.strftime(today, "%Y-%m-%d 23:59:59")
         today_date = datetime.strftime(today, "%Y-%m-%d 00:00:00")
-
+        
         company_id = self.env.user.company_id.id
         categ_nearexpiry_data = self.category_expiry(company_id)
         location_obj = self.env['stock.location']
@@ -188,7 +189,7 @@ class ProductProduct(models.Model):
                 """ % (today_date, today_exp_date, company_id)
                 self._cr.execute(today_expire_data_id)
             result = self._cr.fetchall()
-
+        
             for each in result:
                 for each_in in each:
                     product_id_list.append(each_in)

@@ -31,8 +31,7 @@
                             <div class="payment-method-line" t-if="state.GiftCardAmount">
                                 <input type="text" t-model="state.GiftCardAmount" t-ref="gift_card_amount"
                                        placeholder="Enter Amount" id="text_redeem_amount" name="points"
-                                       style="margin-bottom: 0;font-size: 16px;"
-                                       t-on-keydown="onInputKeyDownNumberVlidation"/>
+                                       style="margin-bottom: 0;font-size: 16px;" t-on-keydown="onInputKeyDownNumberVlidation"/>
                             </div>
                         </div>
                     </div>
