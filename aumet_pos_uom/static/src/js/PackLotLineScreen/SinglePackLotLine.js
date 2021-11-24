@@ -6,7 +6,7 @@ odoo.define('aumet_pod_uom.SinglePackLotLine', function (require) {
 
     const SinglePackLotLineInh = (SinglePackLotLine) =>
         class extends SinglePackLotLine {
-            onUomChange(e) {
+            async onUomChange(e) {
                 const uom_id = e.target.value;
                 var real_qty = this.props.serial.real_qty;
                 this.props.serial.uom = uom_id;
