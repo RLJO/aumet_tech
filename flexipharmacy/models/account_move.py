@@ -40,7 +40,6 @@ class AccountMove(models.Model):
         return super(AccountMove, self).button_draft()
 
 
-
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
