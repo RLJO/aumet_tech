@@ -31,109 +31,6 @@ odoo.define('flexipharmacy.models', function (require) {
     models.load_fields('hr.employee', ['rfid_pin']);
     models.load_fields('pos.order', ['note']);
     models.load_fields('pos.order.line', ['line_note']);
-    var DB = require('point_of_sale.DB');
-    DB.include({
-        init: function (options) {
-            this._super.apply(this, arguments);
-            this.uom_by_product = {};
-            this.product_by_tmpl_id = {};
-        },
-
-        get_qty_for_selected_uom: function (uom_obj, real_qty) {
-            var newQty = real_qty;
-            if (uom_obj.uom_type == 'bigger') {
-                newQty = (real_qty / uom_obj.factor_inv);
-            } else if (uom_obj.uom_type == 'smaller') {
-                newQty = (real_qty * uom_obj.factor);
-            } else if (uom_obj.uom_type == 'reference') {
-                newQty = real_qty;
-            }
-            return newQty;
-        },
-
-        get_product_by_tmpl_id: function (tmpl_id) {
-            return this.product_by_tmpl_id[tmpl_id];
-        },
-
-        add_product_by_tmpl_id: function () {
-            var myProducts = this.product_by_id;
-            for (var product_id in myProducts) {
-                var product = myProducts[product_id]
-                this.product_by_tmpl_id[product.product_tmpl_id] = product;
-            }
-        },
-
-        get_uom_by_product: function (id) {
-            if (id in this.uom_by_product) {
-                return this.uom_by_product[id];
-            }
-            return []
-        },
-
-        add_uoms: function (uoms) {
-            var self = this;
-            _.each(uoms, function (unit) {
-                var uom_product = self.get_product_by_tmpl_id(unit.product_id[0]);
-                if (uom_product.id in self.uom_by_product) {
-                    console.log();
-                } else {
-                    var base_uom = {
-                        "id": uom_product.uom_id[0], "price": uom_product.lst_price,
-                        "product_id": [uom_product.id, uom_product.display_name],
-                        "uom_id": uom_product.uom_id
-                    }
-                    self.uom_by_product[uom_product.id] = []
-                    self.uom_by_product[uom_product.id].push(base_uom)
-                }
-                self.uom_by_product[uom_product.id].push(unit);
-
-            });
-
-            var myProducts = this.product_by_id;
-            for (var product_id in myProducts) {
-                var product = myProducts[product_id]
-                if (product_id in self.uom_by_product) {
-                    console.log();
-                } else {
-                    var base_uom = {
-                        "id": product.uom_id[0], "price": product.lst_price,
-                        "product_id": [product.id, product.display_name],
-                        "uom_id": product.uom_id
-                    }
-                    self.uom_by_product[product.id] = []
-                    self.uom_by_product[product.id].push(base_uom);
-                }
-            }
-        },
-
-        get_uoms: function (serial) {
-            return this.get_uom_by_product(serial.product_id[0])
-        }
-    });
-
-    models.load_models({
-        model: 'product.multi.uom.price',
-        fields: ['uom_id', 'product_id', 'price'],
-        loaded: function (self, uomPrice) {
-            self.product_uom_price = {};
-            if (uomPrice.length) {
-                self.db.add_product_by_tmpl_id();
-                self.db.add_uoms(uomPrice);
-                _.each(uomPrice, function (unit) {
-                    if (!self.product_uom_price[unit.product_id[0]]) {
-                        self.product_uom_price[unit.product_id[0]] = {};
-                        self.product_uom_price[unit.product_id[0]].uom_id = {};
-                    }
-                    self.product_uom_price[unit.product_id[0]].uom_id[unit.uom_id[0]] = {
-                        id: unit.uom_id[0],
-                        name: unit.uom_id[1],
-                        price: unit.price,
-                    };
-                });
-            }
-        },
-    });
-
 
     var _super_paymentline = models.Paymentline.prototype;
     var _super_Order = models.Order.prototype;
@@ -196,140 +93,139 @@ odoo.define('flexipharmacy.models', function (require) {
             return loaded
         },
     });
-    models.PosModel.prototype.models.push(
-        {
-            model: 'aspl.gift.card.type',
-            fields: ['name'],
-            loaded: function (self, card_type) {
-                self.card_type = card_type;
-            },
-        }, {
-            model: 'aspl.gift.card',
-            domain: [['is_active', '=', true]],
-            loaded: function (self, gift_cards) {
-                self.db.add_giftcard(gift_cards);
-                self.set({'gift_card_order_list': gift_cards});
-            },
-        }, {
-            model: 'aspl.gift.voucher',
-            domain: [['is_active', '=', true]],
-            fields: ['id', 'voucher_name', 'voucher_amount', 'minimum_purchase', 'expiry_date', 'redemption_order', 'redemption_customer', 'voucher_code'],
-            loaded: function (self, gift_voucher) {
-                self.gift_vouchers = gift_voucher;
-            },
-        }, {
-            model: 'stock.picking.type',
-            fields: ['default_location_src_id', 'default_location_dest_id'],
-            domain: function (self) {
-                return [['id', '=', self.config.picking_type_id[0]]];
-            },
-            loaded: function (self, default_stock_pick_type) {
-                self.default_stock_pick_type = default_stock_pick_type;
-            },
-        }, {
-            model: 'stock.picking.type',
-            fields: [],
-            domain: [['code', '=', 'internal']],
-            loaded: function (self, stock_pick_typ) {
-                self.stock_pick_typ = stock_pick_typ;
-            },
-        }, {
-            model: 'stock.location',
-            fields: ['complete_name', 'name'],
-            domain: [['usage', '=', 'internal']],
-            loaded: function (self, stock_location) {
-                self.stock_location = stock_location;
-            },
-        }, {
-            model: 'active.ingredient',
-            loaded: function (self, active_ingredients) {
-                self.active_ingredients = active_ingredients;
-            },
-        }, {
-            model: 'pos.promotion',
-            fields: [],
-            domain: function (self) {
-                var current_date = moment(new Date()).locale('en').format("YYYY-MM-DD");
-                var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                var d = new Date();
-                var current_day = weekday[d.getDay()]
-                return [['from_date', '<=', current_date], ['to_date', '>=', current_date], ['active', '=', true],
-                    ['day_of_week_ids.name', 'in', [current_day]]];
-            },
-            loaded: function (self, promotions) {
-                self.pos_promotions = promotions;
-                self.promotions_by_id = {};
-                _.each(promotions, function (promo) {
-                    self.promotions_by_id[promo.id] = promo;
-                })
-            },
-        }, {
-            model: 'pos.conditions',
-            fields: [],
-            loaded: function (self, pos_conditions) {
-                self.pos_conditions_by_id = {};
-                self.pos_conditions = pos_conditions;
-                _.each(pos_conditions, function (promo) {
-                    self.pos_conditions_by_id[promo.id] = promo;
-                })
-            },
-        }, {
-            model: 'get.discount',
-            fields: [],
-            loaded: function (self, pos_get_discount) {
-                self.get_discount_by_id = {};
-                self.get_discount = pos_get_discount;
-                _.each(pos_get_discount, function (promo) {
-                    self.get_discount_by_id[promo.id] = promo;
-                })
-            },
-        }, {
-            model: 'quantity.discount',
-            fields: [],
-            loaded: function (self, pos_get_qty_discount) {
-                self.pos_get_qty_discount = pos_get_qty_discount;
-                self.get_qty_discount_by_id = {};
-                for (let value of pos_get_qty_discount) {
-                    self.get_qty_discount_by_id[value.id] = value;
-                }
-            },
-        }, {
-            model: 'quantity.discount.amt',
-            fields: [],
-            loaded: function (self, pos_qty_discount_amt) {
-                self.pos_qty_discount_amt_by_id = {};
-                self.pos_qty_discount_amt = pos_qty_discount_amt;
-                _.each(pos_qty_discount_amt, function (promo) {
-                    self.pos_qty_discount_amt_by_id[promo.id] = promo;
-                })
-            },
-        }, {
-            model: 'discount.multi.products',
-            fields: [],
-            loaded: function (self, pos_discount_multi_prods) {
-                self.pos_discount_multi_prods = pos_discount_multi_prods;
-                self.pos_discount_multi_prods_by_id = {}
-                for (const disc of pos_discount_multi_prods) {
-                    self.pos_discount_multi_prods_by_id[disc.id] = disc;
-                }
-            },
-        }, {
-            model: 'discount.multi.categories',
-            fields: [],
-            loaded: function (self, pos_discount_multi_category) {
-                self.pos_discount_multi_category = pos_discount_multi_category;
-                self.pos_discount_multi_category_by_id = {}
-                for (const disc of pos_discount_multi_category) {
-                    self.pos_discount_multi_category_by_id[disc.id] = disc;
-                }
-            },
-        }, {
-            model: 'discount.above.price',
-            fields: [],
-            loaded: function (self, pos_discount_above_price) {
-                self.pos_discount_above_price = pos_discount_above_price;
-            },
-        });
+    models.PosModel.prototype.models.push({
+        model: 'aspl.gift.card.type',
+        fields: ['name'],
+        loaded: function (self, card_type) {
+            self.card_type = card_type;
+        },
+    }, {
+        model: 'aspl.gift.card',
+        domain: [['is_active', '=', true]],
+        loaded: function (self, gift_cards) {
+            self.db.add_giftcard(gift_cards);
+            self.set({'gift_card_order_list': gift_cards});
+        },
+    }, {
+        model: 'aspl.gift.voucher',
+        domain: [['is_active', '=', true]],
+        fields: ['id', 'voucher_name', 'voucher_amount', 'minimum_purchase', 'expiry_date', 'redemption_order', 'redemption_customer', 'voucher_code'],
+        loaded: function (self, gift_voucher) {
+            self.gift_vouchers = gift_voucher;
+        },
+    }, {
+        model: 'stock.picking.type',
+        fields: ['default_location_src_id', 'default_location_dest_id'],
+        domain: function (self) {
+            return [['id', '=', self.config.picking_type_id[0]]];
+        },
+        loaded: function (self, default_stock_pick_type) {
+            self.default_stock_pick_type = default_stock_pick_type;
+        },
+    }, {
+        model: 'stock.picking.type',
+        fields: [],
+        domain: [['code', '=', 'internal']],
+        loaded: function (self, stock_pick_typ) {
+            self.stock_pick_typ = stock_pick_typ;
+        },
+    }, {
+        model: 'stock.location',
+        fields: ['complete_name', 'name'],
+        domain: [['usage', '=', 'internal']],
+        loaded: function (self, stock_location) {
+            self.stock_location = stock_location;
+        },
+    }, {
+        model: 'active.ingredient',
+        loaded: function (self, active_ingredients) {
+            self.active_ingredients = active_ingredients;
+        },
+    }, {
+        model: 'pos.promotion',
+        fields: [],
+        domain: function (self) {
+            var current_date = moment(new Date()).locale('en').format("YYYY-MM-DD");
+            var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var d = new Date();
+            var current_day = weekday[d.getDay()]
+            return [['from_date', '<=', current_date], ['to_date', '>=', current_date], ['active', '=', true],
+                ['day_of_week_ids.name', 'in', [current_day]]];
+        },
+        loaded: function (self, promotions) {
+            self.pos_promotions = promotions;
+            self.promotions_by_id = {};
+            _.each(promotions, function (promo) {
+                self.promotions_by_id[promo.id] = promo;
+            })
+        },
+    }, {
+        model: 'pos.conditions',
+        fields: [],
+        loaded: function (self, pos_conditions) {
+            self.pos_conditions_by_id = {};
+            self.pos_conditions = pos_conditions;
+            _.each(pos_conditions, function (promo) {
+                self.pos_conditions_by_id[promo.id] = promo;
+            })
+        },
+    }, {
+        model: 'get.discount',
+        fields: [],
+        loaded: function (self, pos_get_discount) {
+            self.get_discount_by_id = {};
+            self.get_discount = pos_get_discount;
+            _.each(pos_get_discount, function (promo) {
+                self.get_discount_by_id[promo.id] = promo;
+            })
+        },
+    }, {
+        model: 'quantity.discount',
+        fields: [],
+        loaded: function (self, pos_get_qty_discount) {
+            self.pos_get_qty_discount = pos_get_qty_discount;
+            self.get_qty_discount_by_id = {};
+            for (let value of pos_get_qty_discount) {
+                self.get_qty_discount_by_id[value.id] = value;
+            }
+        },
+    }, {
+        model: 'quantity.discount.amt',
+        fields: [],
+        loaded: function (self, pos_qty_discount_amt) {
+            self.pos_qty_discount_amt_by_id = {};
+            self.pos_qty_discount_amt = pos_qty_discount_amt;
+            _.each(pos_qty_discount_amt, function (promo) {
+                self.pos_qty_discount_amt_by_id[promo.id] = promo;
+            })
+        },
+    }, {
+        model: 'discount.multi.products',
+        fields: [],
+        loaded: function (self, pos_discount_multi_prods) {
+            self.pos_discount_multi_prods = pos_discount_multi_prods;
+            self.pos_discount_multi_prods_by_id = {}
+            for (const disc of pos_discount_multi_prods) {
+                self.pos_discount_multi_prods_by_id[disc.id] = disc;
+            }
+        },
+    }, {
+        model: 'discount.multi.categories',
+        fields: [],
+        loaded: function (self, pos_discount_multi_category) {
+            self.pos_discount_multi_category = pos_discount_multi_category;
+            self.pos_discount_multi_category_by_id = {}
+            for (const disc of pos_discount_multi_category) {
+                self.pos_discount_multi_category_by_id[disc.id] = disc;
+            }
+        },
+    }, {
+        model: 'discount.above.price',
+        fields: [],
+        loaded: function (self, pos_discount_above_price) {
+            self.pos_discount_above_price = pos_discount_above_price;
+        },
+    });
 
     var _super_orderline = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
@@ -510,24 +406,7 @@ odoo.define('flexipharmacy.models', function (require) {
                 var selected_uom = this.pos.units_by_id[uom_id];
                 orderline.uom_id = [uom_id, selected_uom.name];
                 var latest_price = orderline.get_latest_price(selected_uom, orderline.product);
-                let product = orderline.product.product_tmpl_id;
-                let uomPrices = []
-                if (orderline.pos.product_uom_price[product])
-                    uomPrices = orderline.pos.product_uom_price[product].uom_id;
-                let uom_price = {'price': 0, 'found': false}
-                if (uomPrices) {
-                    _.each(uomPrices, function (uomPrice) {
-                        if (uomPrice.name == selected_uom.name) {
-                            uom_price.price = uomPrice.price;
-                            uom_price.found = true;
-                        }
-                    });
-                }
-                if (uom_price.found) {
-                    orderline.set_unit_price(uom_price.price);
-                } else {
-                    orderline.set_unit_price(latest_price);
-                }
+                orderline.set_unit_price(latest_price);
                 return true
             } else {
                 return false
