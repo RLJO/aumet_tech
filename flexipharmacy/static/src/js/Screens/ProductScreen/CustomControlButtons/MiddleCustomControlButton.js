@@ -279,7 +279,7 @@ odoo.define('flexipharmacy.MiddleCustomControlButton', function(require) {
                             this.env.pos.db.notification('danger',this.env._t("Please enable cash control from point of sale settings."));
                             return;
                         }
-                        payload['amount'] = this.env.pos.db.thousandsDecimalChanger(payload['amount'].toString())
+                        payload['amount'] = payload['amount']
                         await this.rpc({
                             model: 'pos.session',
                             method: 'take_money_in_out',
@@ -347,7 +347,7 @@ odoo.define('flexipharmacy.MiddleCustomControlButton', function(require) {
         async ShowOrderReturnScreen(){
             await this.connectionCheck()
             if (this.env.pos.get_order().get_connected()){
-                this.showScreen('OrderReturnScreen');
+                this.showScreen('ReturnOrderScreen');
             }
         }
         ShowAlternativeProduct(){

@@ -15,7 +15,7 @@
     'category': 'Point of Sale',
     'author': 'Acespritech Solutions Pvt. Ltd.',
     'website': "http://www.acespritech.com",
-    'version': '3.5.7',
+    'version': '3.5.4',
     'depends': ['base', 'point_of_sale', 'sale_management', 'barcodes', 'stock', 'purchase', 'bus',
                 'hr_attendance', 'account', 'pos_hr', 'product_expiry'],
     'price': 350.00,
@@ -97,14 +97,14 @@
         'wizard/slow_moving_inventory_wizard.xml',
         'views/product_expiry_config_view.xml',
         'views/product_expiry_dashboard.xml',
-
-        'report/slow_moving_inventory.xml',
-        'report/slow_moving_inventory_pdf.xml',
-        'wizard/slow_moving_inventory_wizard.xml',
-        'wizard/pos_doctor_commission_payment_view.xml',
-
-        'report/pos_doctor_payment_report_template.xml',
-        'report/pos_report_doctor_payment.xml',
+        
+        'report/slow_moving_inventory.xml', 
+        'report/slow_moving_inventory_pdf.xml', 
+        'wizard/slow_moving_inventory_wizard.xml', 
+        'wizard/pos_doctor_commission_payment_view.xml', 
+        
+        'report/pos_doctor_payment_report_template.xml', 
+        'report/pos_report_doctor_payment.xml', 
     ],
     'qweb': [
         'static/src/xml/*.xml',
@@ -169,8 +169,10 @@
         'static/src/xml/Screens/GiftVoucherScreen/GiftVoucherScreen.xml',
         'static/src/xml/Screens/PaymentScreen/PaymentScreen.xml',
         'static/src/xml/Screens/LoginScreen/LoginScreen.xml',
-        'static/src/xml/Screens/OrderReturnScreen/OrderReturnScreen.xml',
+        # 'static/src/xml/Screens/OrderReturnScreen/OrderReturnScreen.xml',
+        # =================================================================
         'static/src/xml/Screens/OrderReturnScreen/OrderReturnProductList.xml',
+        # =================================================================
         'static/src/xml/Screens/CashControlScreen/CashControlScreen.xml',
         'static/src/xml/Screens/CashControlScreen/CashControlScreenInput.xml',
         'static/src/xml/Screens/CashControlScreen/StaticInputLines.xml',
@@ -212,6 +214,16 @@
         'static/src/xml/Screens/MaterialMonitorScreen/MaterialMonitorScreen.xml',
         'static/src/xml/expiry_dashboard/dashboard.xml',
         'static/src/xml/Screens/PaymentScreen/PaymentScreendisabledNumpad.xml',
+        'static/src/xml/Screens/OrderReturnScreen/ReturnOrderList.xml',
+        'static/src/xml/Screens/OrderReturnScreen/ReturnOrderRow.xml',
+        'static/src/xml/Screens/OrderReturnScreen/ReturnOrderScreen.xml',
+        'static/src/xml/Screens/OrderReturnScreen/ReturnOrderDetails.xml',
+        'static/src/xml/Screens/OrderReturnScreen/ReturnOrderManagementControlPanel.xml',
+        'static/src/xml/Screens/OrderReturnScreen/ReturnOrderlineDetails.xml',
+        # 'static/src/xml/Screens/OrderReturnScreen/ReturnOrderList.xml',
+        # 'static/src/xml/Screens/OrderReturnScreen/ReturnOrderRow.xml',
+        # 'static/src/xml/Screens/OrderManagementScreen/MobileOrderManagementScreen.xml',
+        # 'static/src/xml/Screens/OrderManagementScreen/ReprintReceiptScreen.xml',
     ],
     "installable": True,
     'auto_install': False

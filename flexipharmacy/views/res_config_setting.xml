@@ -22,9 +22,7 @@
                                 <div class="content-group">
                                     <div class="mt16" attrs="{'invisible': [('mailsend_check','=',False)]}">
                                         <span>Email notification for product expire in
-                                            <field name="email_notification_days" class="oe_inline"
-                                                   style="width:20% !important"/>
-                                            days
+                                            <field name="email_notification_days" class="oe_inline" style="width:20% !important"/> days
                                         </span>
 
                                     </div>
@@ -191,8 +189,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt16 o_settings_container"
-                         attrs="{'invisible':[('is_doctor_commission', '=', False)]}">
+                    <div class="row mt16 o_settings_container" attrs="{'invisible':[('is_doctor_commission', '=', False)]}">
                         <div class="col-xs-12 col-md-6 o_setting_box">
                             <div class="o_setting_right_pane">
                                 <div class="content-group">
@@ -310,6 +307,6 @@
                 </xpath>
             </field>
         </record>
-
+        
     </data>
 </odoo>

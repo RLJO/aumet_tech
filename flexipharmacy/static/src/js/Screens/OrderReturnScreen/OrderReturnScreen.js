@@ -1,11 +1,11 @@
-    odoo.define('point_of_sale.OrderReturnScreen', function(require) {
+    odoo.define('flexipharmacy.OrderReturnScreen', function(require) {
     'use strict';
 
     const { useContext, useState } = owl.hooks;
     const { useAutofocus, useListener } = require('web.custom_hooks');
     const PosComponent = require('point_of_sale.PosComponent');
     const Registries = require('point_of_sale.Registries');
-    const OrderFetcher = require('point_of_sale.OrderFetcher');
+    const OrderFetcher = require('point_of_sale.ReturnOrderFetcher');
     const contexts = require('point_of_sale.PosContext');
     
 
@@ -18,7 +18,7 @@
 
     function getDomainForSingleCondition(fields, toSearch) {
         const orSymbols = Array(fields.length - 1).fill('|');
-        return orSymbols.concat(fields.map((field) => [field, '=', `Order ${toSearch}`]));
+        return orSymbols.concat(fields.map((field) => [field, '=', `${toSearch}`]));
     }
 
     class OrderReturnScreen extends PosComponent {
@@ -66,39 +66,61 @@
                 this._onSearch()
             }
         }
-        ReturnAllProductQty() {
-            if (this.state.ReturnAllProduct){
-                for (let lines of this.state.orderlines) {
-                    var product_id = this.env.pos.db.get_product_by_id(lines.product_id)
-                    const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
-                    if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
-                        lines['select_operation_lot_name'] = []
-                        lines.return_qty = 0
-                    }else if (lines.pack_lot_ids.length > 0 && isAllowOnlyOneLot){
-                        this.state.SelectedLotSerialList = []
-                        lines['select_operation_lot_name'] = []
-                        lines.return_qty = 0
-                    }else{
-                        lines.return_qty = 0
-                    }
-                }
+        async autoCompleteOrder(ev){
+            var self = this;
+            if (event.key === 'Enter') {
+                this._onSearch()
             }else{
-                for (let lines of this.state.orderlines) {
-                    var product_id = this.env.pos.db.get_product_by_id(lines.product_id)
-                    const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
-                    if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
-                        lines['select_operation_lot_name'] = lines.operation_lot_name
-                        lines.return_qty = lines.operation_lot_name.length
-                    }else if (lines.pack_lot_ids.length > 0 && isAllowOnlyOneLot){
-                        this.state.SelectedLotSerialList = lines.operation_lot_name
-                        lines['select_operation_lot_name'] = lines.operation_lot_name
-                        lines.return_qty = lines.order_return_qty
-                    }else{
-                        lines.return_qty = lines.order_return_qty
-                    }
-                }
+                $(ev.currentTarget).autocomplete({
+                    source: async function(request, response) {
+                        var orders = await self.rpc({
+                            model: 'pos.order',
+                            method: 'search_product_order_ids',
+                            kwargs: { config_id: self.env.pos.config.id, keyword: request, session_id: self.env.pos.pos_session.id},
+                            context: self.env.session.user_context,
+                        }); 
+                        var results = $.ui.autocomplete.filter(orders.ids, request.term);
+                        response(orders.ids);
+                    },
+                    select: function(event, ui) {
+                        self.orderManagementContext.searchString = ui.item.value;
+                    },
+                })
             }
         }
+        // ReturnAllProductQty() {
+        //     if (this.state.ReturnAllProduct){
+        //         for (let lines of this.state.orderlines) {
+        //             var product_id = this.env.pos.db.get_product_by_id(lines.product_id)
+        //             const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
+        //             if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
+        //                 lines['select_operation_lot_name'] = []
+        //                 lines.return_qty = 0
+        //             }else if (lines.pack_lot_ids.length > 0 && isAllowOnlyOneLot){
+        //                 this.state.SelectedLotSerialList = []
+        //                 lines['select_operation_lot_name'] = []
+        //                 lines.return_qty = 0
+        //             }else{
+        //                 lines.return_qty = 0
+        //             }
+        //         }
+        //     }else{
+        //         for (let lines of this.state.orderlines) {
+        //             var product_id = this.env.pos.db.get_product_by_id(lines.product_id)
+        //             const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
+        //             if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
+        //                 lines['select_operation_lot_name'] = lines.operation_lot_name
+        //                 lines.return_qty = lines.operation_lot_name.length
+        //             }else if (lines.pack_lot_ids.length > 0 && isAllowOnlyOneLot){
+        //                 this.state.SelectedLotSerialList = lines.operation_lot_name
+        //                 lines['select_operation_lot_name'] = lines.operation_lot_name
+        //                 lines.return_qty = lines.order_return_qty
+        //             }else{
+        //                 lines.return_qty = lines.order_return_qty
+        //             }
+        //         }
+        //     }
+        // }
         get searchFields() {
             return SEARCH_FIELDS;
         }
@@ -124,7 +146,7 @@
             for (let cond of searchConditions) {
                 let [tag, value] = cond.split(/:\s*/);
                 if (!this.validSearchTags.has(tag)) continue;
-                domain.push([this.fieldMap[tag], '=', `Order ${value}`]);
+                domain.push([this.fieldMap[tag], '=', `${value}`]);
             }
             return domain;
         }
@@ -149,7 +171,7 @@
                 method: 'search_paid_order_ids',
                 kwargs: { config_id: this.env.pos.config.id, domain: this._computeDomain() ? this._computeDomain() : [['pos_reference', '=', 'Order ']], limit, offset},
                 context: this.env.session.user_context,
-            }); 
+            });
             if (search_order_id && search_order_id.totalCount > 0){
                 this.state.orders = await this.rpc({
                     model: 'pos.order',

@@ -13,8 +13,7 @@
                             <table border="0" align="center" id="table1" style="width: 100%; margin-top: 16px;">
                                 <tr>
                                     <td>1 Point = <t t-esc="env.pos.format_currency(props.amount_per_point)"/></td>
-                                    <td style="text-align: left; padding-left: 30px;">Your Total Points: <t
-                                            t-esc="props.remaining_point"/></td>
+                                    <td style="text-align: left; padding-left: 30px;">Your Total Points: <t t-esc="props.remaining_point"/></td>
                                 </tr>
                                 <tr>
                                     <td>Redeem Point </td>
