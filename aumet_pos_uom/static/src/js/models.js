@@ -44,7 +44,7 @@ odoo.define('aumet_pos_uom.models', function (require) {
     models.Order = models.Order.extend({
         add_product: function (product, options) {
             _ModelProto.add_product.call(this, product, options);
-            this.setFirstOneSelected(product);
+            // this.setFirstOneSelected(product);
         },
         setFirstOneSelected: async function (product) {
             if (this.pos.config.enable_pos_serial) {
