@@ -32,6 +32,7 @@ class ResPartner(models.Model):
                 lambda line: line.calculation == 'percentage' and line.commission > 100 or line.commission < 0.0):
             raise Warning(_('Commission value for Percentage type must be between 0 to 100.'))
 
+
     is_doctor = fields.Boolean("Is Doctor")
     wallet_lines = fields.One2many('wallet.management', 'customer_id', string="Wallet", readonly=True)
     remaining_wallet_amount = fields.Float(compute="_calc_remaining", string="Remaining Amount", readonly=True,
@@ -43,18 +44,17 @@ class ResPartner(models.Model):
     redeem_loyalty_ids = fields.One2many('pos.redeem.loyalty', 'partner_id', string="Redeem Loyalty")
     remaining_points = fields.Integer(string="Available Points", compute='compute_total_earned')
 
-    pos_doctor_commission_ids = fields.One2many('pos.res.partner.commission', 'partner_comm_id',
-                                                string="Doctor Commission")
-    # pos_commission_payment_type = fields.Selection([
-    #      ('manually', 'Manually'),
-    #      ('monthly', 'Monthly'),
-    #      ('quarterly', 'Quarterly'),
-    #      ('biyearly', 'Biyearly'),
-    #      ('yearly', 'Yearly')
-    #  ], string='Commission Payment Type ')
+    pos_doctor_commission_ids = fields.One2many('pos.res.partner.commission', 'partner_comm_id', string="Doctor Commission")
+   # pos_commission_payment_type = fields.Selection([
+   #      ('manually', 'Manually'),
+   #      ('monthly', 'Monthly'),
+   #      ('quarterly', 'Quarterly'),
+   #      ('biyearly', 'Biyearly'),
+   #      ('yearly', 'Yearly')
+   #  ], string='Commission Payment Type ')
     # pos_next_payment_date = fields.Date(string='Next Payment Date ', store=True)
     pos_commission_count = fields.Float(string='PoS Commission', compute='_pos_compute_commission')
-
+    
     def _pos_compute_commission(self):
         commission = self.env['pos.doctor.commission'].search([])
         for customer in self:

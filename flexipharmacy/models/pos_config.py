@@ -74,6 +74,7 @@ class PosConfig(models.Model):
 
     # return_order
     enable_pos_return = fields.Boolean("Order Return from POS")
+    number_of_days = fields.Integer("Load Orders Of Last 'n' Days")
 
     # POS session close
     enable_close_session = fields.Boolean(string="Enable Close Session")

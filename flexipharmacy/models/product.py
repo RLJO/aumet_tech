@@ -193,10 +193,8 @@ class ProductProduct(models.Model):
             for each in result:
                 for each_in in each:
                     product_id_list.append(each_in)
-            product_config_color_id = self.env['product.expiry.config'].search(
-                [('no_of_days', '=', exp_day), ('active', '=', True)], limit=1)
-            exp_in_day_detail[exp_day] = {'product_id': product_id_list, 'color': product_config_color_id.block_color,
-                                          'text_color': product_config_color_id.text_color}
+            product_config_color_id = self.env['product.expiry.config'].search([('no_of_days', '=',exp_day),('active', '=', True)], limit=1)
+            exp_in_day_detail[exp_day] = {'product_id': product_id_list, 'color': product_config_color_id.block_color, 'text_color': product_config_color_id.text_color}
             exp_in_day[exp_day] = len(result)
 
         category_list = copy.deepcopy(categ_nearexpiry_data)
@@ -212,9 +210,7 @@ class ProductProduct(models.Model):
             category_res.append({'categ_name': k, 'qty': qty, 'id': stock_lot})
 
         exp_in_day['expired'] = self.env['stock.production.lot'].search_count([('state_check', '=', 'Expired')])
-        exp_in_day['today_expired'] = self.env['stock.production.lot'].search_count(
-            [('state_check', '=', 'Expired'), ('expiration_date', '<=', today_end_date),
-             ('expiration_date', '>=', today_date)])
+        exp_in_day['today_expired'] = self.env['stock.production.lot'].search_count([('state_check', '=', 'Expired'), ('expiration_date', '<=', today_end_date), ('expiration_date', '>=', today_date)])
         list_near_expire = []
         quant_sql = '''
             SELECT 
@@ -324,7 +320,7 @@ class ProductProduct(models.Model):
                     sl.usage = 'internal' AND 
                     pt.tracking != 'none' AND 
                     lot.expiration_date BETWEEN '%s' AND '%s'
-            """ % (start_email_notify_date, end_email_notify_date)
+            """ %(start_email_notify_date,end_email_notify_date)
             self._cr.execute(SQL)
             near_expiry_data_list = self._cr.dictfetchall()
             email_list = []
@@ -335,9 +331,8 @@ class ProductProduct(models.Model):
             company_name = self.env['res.company']._company_default_get('your.module')
             if res_user_ids and template_id and near_expiry_data_list:
                 # template_id.send_mail(int(near_expiry_data_list[0]['product_id']), force_send=True)
-                template_id.with_context({'company': company_name, 'email_list': email_list_1, 'from_dis': True,
-                                          'data_list': near_expiry_data_list}).send_mail(
-                    int(near_expiry_data_list[0]['product_id']), force_send=True)
+                template_id.with_context({'company': company_name,'email_list': email_list_1, 'from_dis': True,
+                                          'data_list': near_expiry_data_list}).send_mail(int(near_expiry_data_list[0]['product_id']), force_send=True)
         return True
 
 

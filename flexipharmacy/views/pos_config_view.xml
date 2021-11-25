@@ -393,6 +393,13 @@
                                 <div class="text-muted">
                                     Enable to create order return from POS
                                 </div>
+                                <div class="content-group mt16"
+                                     attrs="{'invisible' : [('enable_pos_return', '=', False)],'required':[('enable_pos_return','==',True)]}">
+                                    <div class="row mt16">
+                                        <label for="number_of_days" class="col-md-3 o_light_label"/>
+                                        <field name="number_of_days"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">

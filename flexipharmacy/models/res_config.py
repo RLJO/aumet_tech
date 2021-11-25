@@ -13,6 +13,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
+
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
@@ -114,10 +115,10 @@ class ResConfigSettings(models.TransientModel):
             'gen_barcode': param_obj.get_param('gen_barcode'),
             'barcode_selection': param_obj.get_param('barcode_selection'),
             'gen_internal_ref': param_obj.get_param('gen_internal_ref'),
-            'pos_commission_calculation': param_obj.get_param('flexipharmacy.pos_commission_calculation'),
-            'pos_commission_based_on': param_obj.get_param('flexipharmacy.pos_commission_based_on'),
-            'pos_commission_with': param_obj.get_param('flexipharmacy.pos_commission_with'),
-            'is_doctor_commission': param_obj.get_param('flexipharmacy.is_doctor_commission'),
+            'pos_commission_calculation' : param_obj.get_param('flexipharmacy.pos_commission_calculation'),
+            'pos_commission_based_on' : param_obj.get_param('flexipharmacy.pos_commission_based_on'),
+            'pos_commission_with' : param_obj.get_param('flexipharmacy.pos_commission_with'),
+            'is_doctor_commission' : param_obj.get_param('flexipharmacy.is_doctor_commission'),
         })
         categories = param_obj.get_param('flexipharmacy.exclude_category')
         res.update(

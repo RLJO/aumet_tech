@@ -25,8 +25,7 @@ class PosCommissionPayment(models.Model):
 
     @api.onchange('doctor_id')
     def _onchange_doctor(self):
-        data_filter = [('doctor_id', '=', self.doctor_id.id), ('state', 'in', ['draft', 'reserved']),
-                       ('invoice_id', '=', False)]
+        data_filter = [('doctor_id', '=', self.doctor_id.id), ('state', 'in', ['draft', 'reserved']), ('invoice_id', '=', False)]
         payment_browse = self.env['pos.doctor.commission'].search(data_filter)
         self.commission_pay_ids = [(6, 0, payment_browse.ids)]
 
@@ -62,8 +61,7 @@ class PosCommissionPayment(models.Model):
             if self.is_invoice_paid:
                 invoice_id.action_post()
                 journal_id = self.env['account.journal'].search([('type', '=', 'bank')], limit=1)
-                amount = total_amount * self.doctor_id.currency_id._get_conversion_rate(
-                    from_currency=invoice_id.currency_id,
+                amount = total_amount * self.doctor_id.currency_id._get_conversion_rate(from_currency=invoice_id.currency_id,
                     to_currency=self.doctor_id.currency_id, company=self.env.user.company_id, date=date.today())
                 values = {
                     'payment_type': 'outbound',
@@ -79,13 +77,12 @@ class PosCommissionPayment(models.Model):
                 payment = self.env['account.payment'].sudo().create(values)
                 payment.sudo().action_post()
                 # for line in payment_ids:
-                move_line = self.env['account.move.line'].search([('payment_id', '=', payment.id), (
-                    'account_id', '=', self.doctor_id.property_account_payable_id.id)])
+                move_line = self.env['account.move.line'].search([('payment_id', '=', payment.id), ('account_id', '=', self.doctor_id.property_account_payable_id.id)])
                 invoice_id.js_assign_outstanding_line(move_line.id)
                 for each in invoice_id.pos_vendor_commission_ids:
                     if each.state == 'reserved':
                         each.state = 'paid'
-            else:
+            else: 
                 for each in invoice_id.pos_vendor_commission_ids:
                     each.state == 'reserved'
 

@@ -17,11 +17,9 @@ class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
 
     remaining_qty = fields.Float("Remaining Qty", compute="_compute_remaining_qty")
-    expiry_state = fields.Selection([('expired', 'Expired'), ('near_expired', 'Near Expired')], string="State",
-                                    compute='_get_production_lot_state')
+    expiry_state = fields.Selection([('expired', 'Expired'), ('near_expired', 'Near Expired')], string="State", compute='_get_production_lot_state')
     state_check = fields.Selection([('Expired', 'Expired'), ('Near Expired', 'Near Expired')], string="Expiry State")
-    product_expiry_reminder = fields.Boolean(compute='_compute_product_expiry_reminder',
-                                             help="The Expiration Date has been reached.")
+    product_expiry_reminder = fields.Boolean(compute='_compute_product_expiry_reminder', help="The Expiration Date has been reached.")
 
     @api.depends('alert_date')
     def _compute_product_expiry_reminder(self):
@@ -30,7 +28,7 @@ class StockProductionLot(models.Model):
             if lot.alert_date and not lot.product_expiry_alert:
                 lot.product_expiry_reminder = lot.alert_date <= current_date
             else:
-                lot.product_expiry_reminder = False
+                lot. product_expiry_reminder = False
 
     @api.model
     def name_search(self, name, args=None, operator='=', limit=100):
@@ -39,9 +37,8 @@ class StockProductionLot(models.Model):
             args = args or []
             recs = self.search([('product_id', '=', self._context.get('default_product_id'))])
             if recs:
-                for each_stock_lot in recs.filtered(lambda l: l.expiration_date).sorted(
-                        key=lambda p: (p.expiration_date),
-                        reverse=False):
+                for each_stock_lot in recs.filtered(lambda l: l.expiration_date).sorted(key=lambda p: (p.expiration_date),
+                                                                                  reverse=False):
                     if each_stock_lot.expiry_state != 'expired':
                         stock_production_lot_obj |= each_stock_lot
                 return stock_production_lot_obj.name_get()
@@ -94,7 +91,7 @@ class StockProductionLot(models.Model):
         lot_ids = self.env['stock.production.lot'].search_read(domain)
         for lot_id in lot_ids:
             quant_ids = self.env['stock.quant'].search([('id', 'in', lot_id.get('quant_ids')), (
-                'location_id', '=', picking_type_id.default_location_src_id.id), ('on_hand', '=', True)])
+            'location_id', '=', picking_type_id.default_location_src_id.id), ('on_hand', '=', True)])
             if quant_ids and quant_ids.quantity >= 0:
                 lot_id.update({
                     'location_product_qty': quant_ids.quantity
