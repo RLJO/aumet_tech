@@ -232,6 +232,7 @@
             <!-- <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderRow.js"/> -->
             <!-- <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderList.js"/> -->
             <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderReturnScreen/ReturnOrderlineDetails.js"/>
+            <script type="text/javascript" src="/flexipharmacy/static/src/js/PosContext.js"/>
             <!-- <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderManagementScreen/ReprintReceiptScreen.js"/>
             <script type="text/javascript" src="/flexipharmacy/static/src/js/Screens/OrderManagementScreen/MobileOrderManagementScreen.js"/> -->
 

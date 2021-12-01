@@ -7,26 +7,22 @@ odoo.define('flexipharmacy.NumpadWidget', function (require) {
     
         const AsplRetNumpadWidgetInh = (NumpadWidget) =>
         class extends NumpadWidget {
-            // changeMode(mode) {
-            //     if (!this.env.pos.get_order().get_refund_order()){
-            //         if (!this.hasPriceControlRights && mode === 'price') {
-            //             return;
-            //         }
-            //         if (!this.hasManualDiscount && mode === 'discount') {
-            //             return;
-            //         }
-            //         this.trigger('set-numpad-mode', { mode });
-            //     }
-            // }
-            // sendInput(key) {
-            //     if (!this.env.pos.get_order().get_refund_order()){
-            //         this.trigger('numpad-click-input', { key });
-            //     }else{
-            //         if (key == "Backspace"){
-            //             this.trigger('numpad-click-input', { key });
-            //         }
-            //     }
-            // }
+            changeMode(mode) {
+                if (!this.env.pos.get_order().get_refund_order()){
+                    if (!this.hasPriceControlRights && mode === 'price') {
+                        return;
+                    }
+                    if (!this.hasManualDiscount && mode === 'discount') {
+                        return;
+                    }
+                    this.trigger('set-numpad-mode', { mode });
+                }
+            }
+            sendInput(key) {
+                if (!this.env.pos.get_order().get_refund_order()){
+                    this.trigger('numpad-click-input', { key });
+                }
+            }
         }
 
     Registries.Component.extend(NumpadWidget, AsplRetNumpadWidgetInh);

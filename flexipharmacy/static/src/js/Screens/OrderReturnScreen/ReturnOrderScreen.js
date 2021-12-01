@@ -8,7 +8,7 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
     const Registries = require('point_of_sale.Registries');
     const ReturnOrderFetcher = require('flexipharmacy.ReturnOrderFetcher');
     const IndependentToOrderScreen = require('point_of_sale.IndependentToOrderScreen');
-    const contexts = require('point_of_sale.PosContext');
+    const contexts = require('flexipharmacy.PosContext');
     const models = require('point_of_sale.models');
 
     class ReturnOrderScreen extends ControlButtonsMixin(IndependentToOrderScreen) {
@@ -29,7 +29,8 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
             this.numpadMode = 'quantity';
             ReturnOrderFetcher.setComponent(this);
             ReturnOrderFetcher.setConfigId(this.env.pos.config_id);
-            this.orderManagementContext = useContext(contexts.orderManagement);
+            this.orderManagementContext = useContext(contexts.returnOrderManagement);
+            this.orderManagementContext.selectedOrder = null
         }
         mounted() {
             ReturnOrderFetcher.on('update', this, this.render);
@@ -160,7 +161,13 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
                         }else{
                             quantity = -lines.return_qty
                         }
+                        
+
                         var price_unit = lines.price_unit
+                        if (lines.discount > 0){
+                            price_unit = lines.price_unit - (lines.price_unit * (lines.discount / 100))
+                        }
+                        var uom_id = lines.uom_id[0]
                         if (lines.pack_lot_ids.length > 0){
                             const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
                             if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
@@ -180,11 +187,13 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
                             });
                             let orderLine = self.env.pos.get_order().get_selected_orderline();
                             orderLine.set_quantity(quantity);
+                            orderLine.set_custom_uom_id(uom_id);
                         }else{
                             self.env.pos.get_order().add_product(product_id, {
                                 quantity: quantity, 
                                 price: price_unit,
                             });
+                            self.env.pos.get_order().get_selected_orderline().set_custom_uom_id(uom_id);
                         }
                     }
                 });

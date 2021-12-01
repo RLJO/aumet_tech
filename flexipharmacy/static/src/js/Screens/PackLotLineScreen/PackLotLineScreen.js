@@ -223,7 +223,9 @@ odoo.define('point_of_sale.PackLotLineScreen', function(require) {
                             }
                         });
                         if (same_order_line){
-//                            orderLine.set_quantity('remove')
+                            if (same_order_line.cid !== orderLine.cid) {
+                               orderLine.set_quantity('remove')
+                            }
                             var total_qty = Number(same_order_line.quantity) + Number(selectedLines[0].inputQty)
                             if (Number(total_qty) > Number(selectedLines[0].location_product_qty)){
                                 alert('Invalid Quantity!');

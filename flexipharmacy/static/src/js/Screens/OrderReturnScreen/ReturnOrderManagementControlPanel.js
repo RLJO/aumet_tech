@@ -6,7 +6,7 @@ odoo.define('flexipharmacy.ReturnOrderManagementControlPanel', function (require
     const PosComponent = require('point_of_sale.PosComponent');
     const Registries = require('point_of_sale.Registries');
     const OrderFetcher = require('flexipharmacy.ReturnOrderFetcher');
-    const contexts = require('point_of_sale.PosContext');
+    const contexts = require('flexipharmacy.PosContext');
 
     // NOTE: These are constants so that they are only instantiated once
     // and they can be used efficiently by the ReturnOrderManagementControlPanel.
@@ -34,7 +34,7 @@ odoo.define('flexipharmacy.ReturnOrderManagementControlPanel', function (require
     class ReturnOrderManagementControlPanel extends PosComponent {
         constructor() {
             super(...arguments);
-            this.orderManagementContext = useContext(contexts.orderManagement);
+            this.orderManagementContext = useContext(contexts.returnOrderManagement);
             useListener('clear-search', this._onClearSearch);
             useAutofocus({ selector: 'input' });
         }

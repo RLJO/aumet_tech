@@ -1005,7 +1005,7 @@ class PosOrder(models.Model):
             domain += [('create_date', '>', startdatetime), ('create_date', '<=', enddatetime)]
 
         real_domain = AND([domain, default_domain])
-        ids = self.search(AND([domain, default_domain]), limit=limit, offset=offset).ids
+        ids = self.search(AND([domain, default_domain]), limit=limit, offset=offset, order='id desc').ids
         if not ids:
             product_ids = self.env['product.product'].search(['|', ('name', 'ilike', searchWord), '|', ('barcode', 'ilike', searchWord), ('default_code', 'ilike', searchWord)])
             product_search_domain = [('product_id', 'in', product_ids.ids), ('order_id.back_order_reference', '=', False)]
@@ -1015,7 +1015,7 @@ class PosOrder(models.Model):
                 startdatetime = str(week_ago) + " 00:00:00"
                 enddatetime = str(today) + " 23:59:59"
                 product_search_domain += [('order_id.create_date', '>', startdatetime), ('order_id.create_date', '<=', enddatetime)]
-            line_ids = self.env['pos.order.line'].search(product_search_domain)
+            line_ids = self.env['pos.order.line'].search(product_search_domain, order='id desc')
             ids = line_ids.mapped('order_id').ids
         totalCount = self.search_count(real_domain)
         return {'ids': ids, 'totalCount': totalCount}
@@ -1054,6 +1054,7 @@ class PosOrderLine(models.Model):
         return_pack_lot_ids = []
         vals = {
             'qty': orderline.qty,
+            'uom_id': [orderline.uom_id.id, orderline.uom_id.name],
             'order_return_qty': orderline.order_return_qty,
             'price_unit': orderline.price_unit,
             'price_subtotal': orderline.price_subtotal,

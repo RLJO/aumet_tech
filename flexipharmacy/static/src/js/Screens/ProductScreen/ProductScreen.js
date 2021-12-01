@@ -220,16 +220,20 @@ odoo.define('flexipharmacy.ProductScreen', function(require) {
                     this.showScreen('PaymentScreen');
                 }    
             }
-            // async _clickProduct(event) {
-            //     super._clickProduct(event)
-            // }
-            // async _barcodeProductAction(code) {
-            //     if (!this.env.pos.get_order().get_refund_order()){
-            //         super._barcodeProductAction(code)
-            //     }else{
-            //         return false
-            //     }
-            // }
+            async _clickProduct(event) {
+                if (!this.env.pos.get_order().get_refund_order()){
+                    super._clickProduct(event)
+                }else{
+                    return false
+                }
+            }
+            async _barcodeProductAction(code) {
+                if (!this.env.pos.get_order().get_refund_order()){
+                    super._barcodeProductAction(code)
+                }else{
+                    return false
+                }
+            }
             async _getAddProductOptions(product) {
                 let price_extra = 0.0;
                 let draftPackLotLines, weight, description, packLotLinesToEdit;
