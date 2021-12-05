@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data noupdate="0">
-         <record id="allow_user_to_validate_inventory_adjustment" model="res.groups">
-            <field name="name">Allow user to Validate Inventory Adjustment </field>
-        </record>
-
-    </data>
-</odoo>
