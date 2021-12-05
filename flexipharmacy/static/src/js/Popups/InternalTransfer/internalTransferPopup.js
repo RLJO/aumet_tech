@@ -9,6 +9,9 @@ odoo.define('flexipharmacy.internalTransferPopup', function(require) {
         constructor() {
             super(...arguments);
             this.state = useState({PickingMsg: '', PickingType: '', stateOfPicking:'draft', SourceLocation:'', DestLocation:'', BlankValidationPicking: false, BlankValidationSource: false, BlankValidationDest: false});
+            if (this.props.defaultSource){
+                this.state.SourceLocation = this.props.defaultSource;
+            }
         }
         getPayload() {
             return {stateOfPicking: this.state.stateOfPicking, SourceLocation: this.state.SourceLocation, DestLocation: this.state.DestLocation, PickingType: this.state.PickingType};

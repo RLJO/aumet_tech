@@ -514,20 +514,28 @@
 }
 .warehouse-screen .flex-container-inner > div {
     width: 100%;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
 }
-
+.warehouse-screen .flex-container-inner .flex-text-detail-button{
+    width: 115px;
+}
+.warehouse-screen .flex-container-inner .flex-text-detail{
+    font-family: "Lato","Lucida Grande", Helvetica, Verdana, Arial;
+    font-size: large;
+}
 .warehouse-screen .flex-container-inner > div:first-child {
     text-align:left;
 }
 
 .warehouse-screen .flex-container-inner:nth-child(even) {
     border-bottom: 1px solid #e2e2e2;
+    padding: 8px;
 }
 
 .warehouse-screen .flex-container-inner:nth-child(odd) {
     border-bottom: 1px solid #e2e2e2;
+    padding: 8px;
 }
 
 .pos .warehouse-icon{

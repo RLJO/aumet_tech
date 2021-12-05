@@ -46,19 +46,21 @@
                                 <div class="tab-content">
                                     <t t-foreach="warehouse.locations" t-as="location">
                                         <div class="flex-container-inner">
-                                            <div>
+                                            <div class="flex-text-detail">
                                                 <t t-esc="location.name"/>
                                             </div>
-                                            <div>
+                                            <div class="flex-text-detail"> 
                                                 <t t-esc="location.qty_available"/>
                                             </div>
-                                            <div>
+                                            <div class="flex-text-detail">
                                                 <t t-esc="location.incoming_qty"/>
                                             </div>
-                                            <div>
+                                            <div class="flex-text-detail">
                                                 <t t-esc="location.outgoing_qty"/>
                                             </div>
-                                            <div style="width:115px"> </div>
+                                            <div class="flex-text-detail-button" >
+                                                <img src="/flexipharmacy/static/src/img/icons/transfer.png" title="Internal Transfer" style="height: 29px;width: 31px;" t-on-click="CreateInternalTransfer(location)"/>
+                                            </div>
                                         </div>
                                     </t>
                                 </div>

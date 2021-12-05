@@ -168,10 +168,27 @@ odoo.define('flexipharmacy.ReturnOrderScreen', function (require) {
                             price_unit = lines.price_unit - (lines.price_unit * (lines.discount / 100))
                         }
                         var uom_id = lines.uom_id[0]
-                        if (lines.pack_lot_ids.length > 0){
-                            const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
-                            if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
-                                self.state.SelectedLotSerialList = lines.select_operation_lot_name
+                        if (quantity > 0){
+                            if (lines.pack_lot_ids.length > 0){
+                                const isAllowOnlyOneLot = product_id.isAllowOnlyOneLot();
+                                if (lines.pack_lot_ids.length > 0 && !isAllowOnlyOneLot){
+                                    self.state.SelectedLotSerialList = lines.select_operation_lot_name
+                                }else{
+                                    self.state.SelectedLotSerialList = lines.operation_lot_name
+                                }
+                                let draftPackLotLines
+                                const modifiedPackLotLines = {}
+                                var newPackLotLines = self.state.SelectedLotSerialList
+                                draftPackLotLines = { modifiedPackLotLines, newPackLotLines };
+                                draftPackLotLines
+                                self.env.pos.get_order().add_product(product_id, {
+                                    draftPackLotLines,
+                                    quantity: quantity, 
+                                    price: price_unit,
+                                });
+                                let orderLine = self.env.pos.get_order().get_selected_orderline();
+                                orderLine.set_quantity(quantity);
+                                orderLine.set_custom_uom_id(uom_id);
                             }else{
                                 self.state.SelectedLotSerialList = lines.operation_lot_name
                             }
