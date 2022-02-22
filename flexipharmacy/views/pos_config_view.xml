@@ -28,6 +28,14 @@
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="enable_int_trans_stock"/>
+
+                                <div class="content-group mt16" attrs="{'invisible' : [('enable_int_trans_stock', '=', False)]}">
+                                    <div class="row mt16">
+                                        <label string="Default Destination Location" for="default_dest_stock"
+                                               class="col-md-3 o_light_label" style="width: 170px;"/>
+                                        <field name="default_dest_stock"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

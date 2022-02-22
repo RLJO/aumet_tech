@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_aumet_batch_price_aumet_batch_price,aumet_batch_price.aumet_batch_price,model_aumet_batch_price_aumet_batch_price,base.group_user,1,1,1,1

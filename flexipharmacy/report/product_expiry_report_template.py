@@ -17,9 +17,11 @@ class GroupByCustomerPaymentPdf(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        return {
-            'data': data['stock'],
-            'doc_model': 'product.expiry.report',
-        }
+        return {'doc_ids': data['ids'],
+                'doc_model': data['model'],
+                'docs': data["data"],
+                "from_date": data["from_date"],
+                "to_date": data["to_date"],
+                }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

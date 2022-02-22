@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<report report_type="qweb-pdf" id="aumet_product_moves_report_action"
+		model="product.product" name="aumet_product_moves_report.product_moves"
+		string="Product Moves" file="aumet_product_moves_report.product_moves" />
+
+</odoo>

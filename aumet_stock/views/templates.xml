@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="assets_backend" name="pos aumet assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/aumet_stock/static/src/js/pos.js"/>
+            <script type="text/javascript" src="/aumet_stock/static/src/js/paymentScreen.js"/>
+        </xpath>
+    </template>
+</odoo>

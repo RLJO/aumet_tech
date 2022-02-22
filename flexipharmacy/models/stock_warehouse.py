@@ -19,6 +19,13 @@ class Warehouse(models.Model):
         warehouse_list = []
         product = self.env['product.product'].browse(product_id)
         for warehouse_obj in self.search([('company_id', '=', self.env.user.company_id.id)]):
+
+            picking_id = self.env['stock.picking.type'].search(
+                [('warehouse_id', '=', warehouse_obj.id), ('code', '=', 'internal')], limit=1)
+            if picking_id:
+                picking_id = picking_id.id
+            else:
+                picking_id = ''
             parent_loc_id = warehouse_obj.lot_stock_id.id
             location_list = []
             warehouse_total = []
@@ -27,8 +34,10 @@ class Warehouse(models.Model):
             for each in self.env['stock.location'].search([('location_id', 'child_of', parent_loc_id)]):
                 available_qty = product.with_context({'location': each.id, 'compute_child': False})._product_available()
                 available_qty[product_id].update({'name': each.display_name})
+                available_qty[product_id].update({'id': each.id})
                 location_list.append(available_qty[product_id])
             warehouse_list.append({'id': warehouse_obj.id, 'name': warehouse_obj.name,
-                                   'locations': location_list, 'Warehouse_total': warehouse_total})
+                                   'locations': location_list, 'Warehouse_total': warehouse_total,
+                                   'picking_id': picking_id})
         return warehouse_list
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

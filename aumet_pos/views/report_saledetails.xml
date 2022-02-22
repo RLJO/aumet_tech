@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_saledetails_inherit" inherit_id="point_of_sale.report_saledetails">
+            <xpath expr="//div[hasclass('page')]//table" position="after">
+                <h3>Credit</h3>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach='credits' t-as='credit'>
+                            <td>
+                                <t t-esc="credit['name']"/>
+                            </td>
+                            <td>
+                                <t t-esc="credit['amount']"
+                                   t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <h3>Insurance</h3>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Insurance Company</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach='insurances' t-as='insurance'>
+                            <td>
+                                <t t-esc="insurance['name']"/>
+                            </td>
+                            <td>
+                                <t t-esc="insurance['amount']"
+                                   t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <h3>Money IN</h3>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Reason</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach='money_in' t-as='money'>
+                            <td>
+                                <t t-esc="money['reason']"/>
+                            </td>
+                            <td>
+                                <t t-esc="money['amount']"
+                                   t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <h3>Money Out</h3>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Reason</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach='money_out' t-as='money'>
+                            <td>
+                                <t t-esc="money['reason']"/>
+                            </td>
+                            <td>
+                                <t t-esc="money['amount']"
+                                   t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_shortfall_report_wizard" model="ir.ui.view">
+        <field name="name">ShortFall Report</field>
+        <field name="model">product.shortfall.report</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="ShortFall">
+                <group>
+                    <group>
+                        <field name="warehouse_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_report" string="Get Report" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_product_shortfall_report"
+                name="Shortfall Report"
+                res_model="product.shortfall.report"
+                view_mode="form"
+                target="new"/>
+
+    <menuitem action="action_product_shortfall_report"
+              id="menu_product_shortfall_report"
+              parent="stock.menu_warehouse_report"/>
+</odoo>

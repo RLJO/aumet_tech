@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="update_uom_view_form" model="ir.ui.view">
+            <field name="name">update.uom.form</field>
+            <field name="model">update.uom</field>
+            <field name="arch" type="xml">
+                <form string="Update UOM">
+
+                    <group>
+                        <group>
+                            <field name="file"/>
+                        </group>
+                        <group>
+                            <field name="update_all"/>
+                        </group>
+
+                    </group>
+                    <footer>
+                        <button type="object" name="submit" string="Upload" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="update_uom_action" model="ir.actions.act_window">
+            <field name="name">Update UOM</field>
+            <field name="res_model">update.uom</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="update_uom_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_update_uom" action="update_uom_action"
+                  name="Update UoM"
+                  parent="stock.product_uom_menu"
+                  sequence="28" groups="base.group_user"/>
+    </data>
+</odoo>

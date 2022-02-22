@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<template id="product_moves">
+			<t t-call="web.html_container">
+				<t t-call="web.external_layout">
+					<div class="page" >
+						<t t-foreach="docs" t-as="Product">
+							<div class="row">
+								<h2>
+									<center>
+										<span>Product Moves</span>
+									</center>
+								</h2>
+							</div>
+							<table width="100%">
+								<tr>
+									<td style="border:none;">
+										Product Name :
+										<span t-esc="Product.name_get()[0][1]" />
+									</td>
+									<td style="border:none;">
+										From :
+										<span t-esc="data['form']['date1']" />
+									</td>
+								</tr>
+								
+								<tr>
+									<td style="border:none;">
+										Barcode :
+										<t t-if="Product.barcode">
+											<span t-esc="Product.barcode" />
+										</t>
+									</td>
+									<td style="border:none;">
+										To :
+										<span t-esc="data['form']['date2']" />
+									</td>
+								</tr>
+								<tr>
+									<td style="border:none;">
+										Include Initial Balance :
+										<t t-if="data['form']['incl_init_balance']">Yes</t>
+										<t t-if="not data['form']['incl_init_balance']">No</t>
+									</td>
+									<td style="border:none;">
+										Current Cost :
+										<span t-esc="formatLang(Product.standard_price, digits='Product Price')" />
+									</td>
+								</tr>
+								<tr>
+									<t t-if="data['form']['location_id']">
+										<td style="border:none;">
+											Location :
+											<span t-esc="data['form']['location_id'][1]" />
+										</td>
+										<td></td>
+									</t>
+								</tr>
+	
+	
+							</table>
+							<br />
+							<br />
+							<table class="table table-condensed" width="100%">
+								<thead>
+									<tr>
+										<th width="100px">Date</th>
+										<th t-if="data['form']['show_partner']">Partner</th>
+										<th>Ref</th>
+										<th t-if="data['form']['show_origin']">Origin</th>
+										<th t-if="data['form']['show_locations']">Src Location</th>
+										<th t-if="data['form']['show_locations']">Dest Location</th>
+										<th t-if="data['form']['show_lot']">Lot Numbers</th>
+										<th t-if="data['form']['show_expiry_date']">Expiry Date</th>
+										<th>Type</th>
+										<th class="text-right">In</th>
+										<th class="text-right">Out</th>
+										<th class="text-right">Balance</th>
+										<th class="text-right" t-if="data['form']['show_cost_value']">Cost</th>
+										<th class="text-right" t-if="data['form']['show_cost_value']">Value</th>
+									</tr>
+								</thead>
+								<t t-set="initial_balances"
+									t-value="get_initial_balance(data['form']['date1'], data['form']['date2'],Product.id, data['form']['location_id'],data['form']['incl_init_balance'],data['form']['sort_type'],data['form']['sort_on'])" />
+								<tbody>
+									<t t-if="data['form']['incl_init_balance']">
+										<tr>
+											<td>
+												<b>
+													<span t-esc="data['form']['date1']" />
+												</b>
+											</td>
+											<td t-if="data['form']['show_partner']"></td>
+											<td t-if="data['form']['show_origin']"></td>
+											<td t-if="data['form']['show_locations']"></td>
+											<td t-if="data['form']['show_locations']"></td>
+											<td t-if="data['form']['show_lot']"></td>
+											<td t-if="data['form']['show_expiry_date']"></td>
+											<td colspan="4">
+												<b>Initial Balance</b>
+											</td>
+											<td class="text-right">
+												<b>
+													<span t-esc="formatLang(initial_balances['i_balance'], digits='Product Unit of Measure')" />
+												</b>
+											</td>
+											<td class="text-right" t-if="data['form']['show_cost_value']">
+												<b>
+													<span t-esc="formatLang(initial_balances['i_cost'], digits='Product Price')" />
+												</b>
+											</td>
+											<td class="text-right" t-if="data['form']['show_cost_value']">
+												<b>
+													<span t-esc="formatLang(initial_balances['i_value'], digits='Product Price')" />
+												</b>
+											</td>
+										</tr>
+									</t>
+									
+									<t t-set="out_total" t-value="0"/>
+									<t t-set="in_total" t-value="0"/>	
+									
+									<t
+										t-foreach="get_moves(data['form']['date1'], data['form']['date2'],Product.id, data['form']['location_id'],data['form']['incl_init_balance'],data['form']['sort_type'],data['form']['sort_on'])"
+										t-as="mov">
+										<tr>
+											<td>
+												<span t-esc="mov['date']" />
+											</td>
+											<td t-if="data['form']['show_partner']">
+												<span t-esc="mov['partner_name']" />
+											</td>
+											<td>
+												<span t-esc="mov['picking_name']" />
+											</td>
+											<td t-if="data['form']['show_origin']">
+												<span t-esc="mov['origin']" />
+											</td>
+											<td t-if="data['form']['show_locations']">
+												<span t-esc="mov['location_name']" />
+											</td>
+											<td t-if="data['form']['show_locations']">
+												<span t-esc="mov['des_name']" />
+											</td>
+											<td t-if="data['form']['show_lot']">
+												<span t-esc="mov['lot_numbers']" />
+											</td>
+											<td t-if="data['form']['show_expiry_date']">
+												<span t-esc="mov['expiry_date']" />
+											</td>
+											<td>
+												<t t-if="mov['is_adj']">
+													Adjustment
+												</t>
+												<t t-if="not mov['is_adj']">
+													<span t-esc="mov['type']" />
+												</t>
+											</td>
+											<t t-if="mov['type'] in ['Internal']">
+												<td class="text-right">
+													<span t-esc="formatLang(mov['product_qty'],digits='Product Unit of Measure')"/>
+												</td>
+												<td></td>
+											</t>
+											<t t-if="mov['type'] in ['Purchase','S.Refund', 'In']">
+												<t t-set="in_total" t-value="in_total+mov['product_qty']"/>
+												<td class="text-right">
+													<span t-esc="formatLang(mov['product_qty'],digits='Product Unit of Measure')"/>
+												</td>
+												<td></td>
+											</t>
+											<t t-if="mov['type'] in ['Sale','P.Refund', 'Out']">
+												<t t-set="out_total" t-value="out_total+mov['product_qty']"/>
+												<td></td>
+												<td class="text-right">
+													<span t-esc="formatLang(mov['product_qty'],digits='Product Unit of Measure')"/>
+												</td>
+											</t>
+											<td class="text-right">
+												<span t-esc="formatLang(mov['balance'],digits='Product Unit of Measure')" />
+											</td>
+											<td class="text-right" t-if="data['form']['show_cost_value']">
+												<span t-esc="formatLang(mov['cost'],digits='Product Price')" />
+											</td>
+											<td class="text-right" t-if="data['form']['show_cost_value']">
+												<span t-esc="formatLang(mov['value'],digits='Product Price')" />
+											</td>
+										</tr>
+									</t>
+<!--									<t t-set="final_totals" t-value="get_final_totals()" />-->
+									<!--<tf>
+										<td></td>
+										<td t-if="data['form']['show_partner']"></td>
+										<td t-if="data['form']['show_origin']"></td>
+										<td t-if="data['form']['show_locations']"></td>
+										<td t-if="data['form']['show_locations']"></td>
+										<td t-if="data['form']['show_lot']"></td>
+										<td t-if="data['form']['show_expiry_date']"></td>
+										<td colspan="2">
+											<b>Final Balance</b>
+										</td>
+										<td class="text-right">
+											<b>
+												<span t-esc="formatLang(in_total,digits='Product Unit of Measure')" />
+											</b>
+										</td>
+										<td class="text-right">
+											<b>
+												<span t-esc="formatLang(out_total,digits='Product Unit of Measure')" />
+											</b>
+										</td>
+										<td class="text-right">
+											<b>
+												<span t-esc="formatLang(final_totals['f_balance'],digits='Product Unit of Measure')" />
+											</b>
+										</td>
+										<td></td>
+										<td class="text-right" t-if="data['form']['show_cost_value']">
+											<b>
+												<span t-esc="formatLang(final_totals['f_value'],digits='Product Price')" />
+											</b>
+										</td>
+									</tf>-->
+								</tbody>
+							</table>
+	                        <p style="page-break-after:always"/>
+						</t>
+					</div>
+				</t>
+			</t>
+		</template>
+
+	</data>
+</openerp>

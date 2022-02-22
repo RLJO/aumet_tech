@@ -6,7 +6,7 @@
     const PosComponent = require('point_of_sale.PosComponent');
     const Registries = require('point_of_sale.Registries');
     const OrderFetcher = require('point_of_sale.ReturnOrderFetcher');
-    const contexts = require('flexipharmacy.PosContext');
+    const contexts = require('point_of_sale.PosContext');
     
 
     const VALID_SEARCH_TAGS = new Set(['order']);
@@ -24,7 +24,7 @@
     class OrderReturnScreen extends PosComponent {
         constructor() {
             super(...arguments);
-            this.orderManagementContext = useContext(contexts.returnOrderManagement);
+            this.orderManagementContext = useContext(contexts.orderManagement);
             useListener('clear-search', this._onClearSearch);
             useListener('serialNumberPopup', this.OpenSerialNumberPopup);
             useListener('search', this._onSearch);

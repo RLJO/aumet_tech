@@ -28,21 +28,7 @@ class StockProductionLot(models.Model):
             if lot.alert_date and not lot.product_expiry_alert:
                 lot.product_expiry_reminder = lot.alert_date <= current_date
             else:
-                lot. product_expiry_reminder = False
-
-    @api.model
-    def name_search(self, name, args=None, operator='=', limit=100):
-        if self._context.get('default_product_id'):
-            stock_production_lot_obj = self.env['stock.production.lot']
-            args = args or []
-            recs = self.search([('product_id', '=', self._context.get('default_product_id'))])
-            if recs:
-                for each_stock_lot in recs.filtered(lambda l: l.expiration_date).sorted(key=lambda p: (p.expiration_date),
-                                                                                  reverse=False):
-                    if each_stock_lot.expiry_state != 'expired':
-                        stock_production_lot_obj |= each_stock_lot
-                return stock_production_lot_obj.name_get()
-        return super(StockProductionLot, self).name_search(name, args, operator, limit)
+                lot.product_expiry_reminder = False
 
     @api.model
     def product_state_check(self):
@@ -59,7 +45,7 @@ class StockProductionLot(models.Model):
                             each_stock_lot.write({'state_check': 'Near Expired'})
             else:
                 each_stock_lot.write({'state_check': ''})
-
+    #
     @api.depends('alert_date', 'expiration_date')
     def _get_production_lot_state(self):
         today_date = date.today()

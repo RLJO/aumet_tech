@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="active_ingredients_tree_atc" model="ir.ui.view">
+            <field name="name">active ingredient tree atc code</field>
+            <field name="model">active.ingredient</field>
+            <field name="inherit_id" ref="flexipharmacy.active_ingredients_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="atc_code"/>
+                </xpath>
+            </field>
+        </record>
+
+         <!-- Inventory management - Search by active ingredient on products page  -->
+        <record id="search_by_active_ingredient_on_products_page" model="ir.ui.view">
+            <field name="name">product.template.customsearch</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="/search/field[@name='name']" position="after">
+                    <field name="active_ingredient_ids" string="Active Ingredient"
+                           filter_domain="[('active_ingredient_ids','ilike',self)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -15,7 +15,7 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     money_in_out = fields.Boolean("Money In/Out")
-    money_in_out_receipt = fields.Boolean("Money In/Out Receipt")
+    money_in_out_receipt = fields.Boolean("Money In/Out Receipt", default=True)
 
     # Wallet field
     enable_wallet = fields.Boolean('Wallet')
@@ -46,7 +46,7 @@ class PosConfig(models.Model):
 
     # Internal Stock Transfer
     enable_int_trans_stock = fields.Boolean(string="Internal Stock Transfer")
-
+    default_dest_stock = fields.Many2one('stock.location', 'Default Destination Location')
     # Select sale person from POS
     enable_select_sale_person = fields.Boolean(string="Select Sale Person")
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/aumet_pos_theme/static/src/js/LoginScreen/LoginScreen.js"/>
+            <script type="text/javascript" src="/aumet_pos_theme/static/src/js/useSelectEmployee.js"/>
+        </xpath>
+    </template>
+</odoo>

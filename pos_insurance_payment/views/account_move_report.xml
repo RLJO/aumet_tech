@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template inherit_id="account.report_invoice_document" id="report_invoice_document_inherit">
+            <xpath expr="//div//div[hasclass('clearfix')]//div//div//table//tr"
+                   position="inside">
+                <tr class="border-black o_total">
+                    <td t-if="o.customer_paid">
+                        <strong>Customer Cash:</strong>
+                    </td>
+                    <td class="text-right" t-if="o.customer_paid">
+                        <span class="text-nowrap" t-field="o.customer_paid"/>
+                    </td>
+                </tr>
+<!--                <div class="col-auto col-4 mw-100 mb-2" t-if="o.customer_paid" name="customer_paid">-->
+<!--                    <strong></strong>-->
+<!--                    <p class="m-0" t-field="o.customer_paid"/>-->
+<!--                </div>-->
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="vendor_product_template">
+            <t t-call="web.html_container">
+				<t t-call="web.external_layout">
+					<div class="page" >
+						<t t-foreach="docs" t-as="Product">
+							<div class="row">
+								<h2>
+									<center>
+										<span>Product By Vendor</span>
+									</center>
+								</h2>
+							</div>
+							<table class="table table-condensed" style="table-layout: fixed; width: 100%;">
+								<thead style='font-size: 14px;'>
+									<tr>
+										<th>Barcode</th>
+										<th>Product</th>
+										<th>Quantity</th>
+									</tr>
+								</thead>
+								<t t-foreach="data['vendors_product']" t-as="vendor">
+									<tr>
+										<th colspan="2"><span t-esc="data['vendors'][vendor]['name']"></span></th>
+										<th colspan="1"><span t-esc="data['vendors'][vendor]['qty']"></span></th>
+									</tr>
+									<tbody  style='font-size: 12px;'>
+										<tr t-foreach="data['vendors_product'][vendor]" t-as="product">
+											<td><span t-esc="product['barcode']"/></td>
+											<td><span t-esc="product['name']"/></td>
+											<td><span t-esc="product['qty']"/></td>
+										</tr>
+									</tbody>
+								</t>
+							</table>
+	                        <p style="page-break-after:always"/>
+						</t>
+					</div>
+				</t>
+			</t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_lot_pharmacy_code_zpl">
+            <t t-foreach="docs" t-as="lot">
+                <t t-translation="off">
+                   ^XA
+                    ^FO100,50
+                    ^A0N,25,30^FD<t t-esc="lot.company_id.name"/>^FS
+                    ^FO100,100^BY3
+                    ^BCN,100,Y,N,N
+                    ^FD<t t-esc="lot.ref"/>^FS
+                    ^FO120,240^BY3
+                    ^A0N,20,20^FD<t t-esc="lot.product_id.display_name"/>^FS
+                    ^FO300,280^BY3
+                    ^A0N,20,20^FD<t t-if="lot.company_id.currency_id" t-esc="lot.company_id.currency_id.name"/> <t t-esc="lot.product_id.list_price"/> <t  t-if="lot.product_id.taxes_id">(Vat)</t><t  t-if="not lot.product_id.taxes_id">(No Vat)</t>^FS
+                    ^XZ
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

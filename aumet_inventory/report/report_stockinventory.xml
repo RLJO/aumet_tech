@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_inventory" inherit_id="stock.report_inventory">
+            <xpath expr="//th[@groups='stock.group_production_lot']" position="replace">
+                <th groups="stock.group_production_lot">
+                    <strong>Expiry Date</strong>
+                </th>
+            </xpath>
+            <xpath expr="//table//thead//tr//th[@class='text-right']" position="after">
+                <th class="text-right">
+                    <strong>Unit Sale Price</strong>
+                </th>
+            </xpath>
+
+            <xpath expr="//span[@t-field='line.prod_lot_id']" position="replace">
+                <span t-field="line.expiration_date"></span>
+            </xpath>
+
+            <xpath expr="//table//tbody//t//tr[@t-as='line']//td[@class='text-right']" position="after">
+                <td class="text-right">
+                    <span t-field="line.sale_price"/>
+                </td>
+            </xpath>
+
+        </template>
+    </data>
+</odoo>

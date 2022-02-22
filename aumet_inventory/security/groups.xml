@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+         <record id="stock_validate_inventory_adjustment" model="res.groups">
+            <field name="name">Validate Inventory Adjustment </field>
+        </record>
+
+         <record id="stock_validate_inventory_adjustment_in_out" model="res.groups">
+            <field name="name">Validate Inventory Adjustment In/Out</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="shortfall_wizard_view" model="ir.ui.view">
+            <field name="name">shortfall.wizard.view</field>
+            <field name="model">shortfall.wizard</field>
+            <field name="arch" type="xml">
+                <form string="ShortFall">
+                    <group>
+                        <group>
+                            <field name="from_date"/>
+                        </group>
+                        <group>
+                            <field name="to_date"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Print" class="oe_highlight" type="object" name="print_report"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="shortfall_report_action" model="ir.actions.act_window">
+            <field name="name">ShortFall Report</field>
+            <field name="res_model">shortfall.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem action="shortfall_report_action" id="menu_shortfall_report"
+                  parent="stock.menu_warehouse_report" sequence="152"/>
+    </data>
+</odoo>

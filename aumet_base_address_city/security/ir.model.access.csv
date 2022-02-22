@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_province_group_user,res_province group_user,model_aumet_base_address_city_province,,1,1,1,1
+access_res_province_group_all,res_province group_user_all,model_aumet_base_address_city_province,,1,0,0,0
+access_res_district_group_user,res_district group_user,model_aumet_base_address_city_district,,1,1,1,1
+access_res_district_group_all,res_district group_user_all,model_aumet_base_address_city_district,,1,0,0,0

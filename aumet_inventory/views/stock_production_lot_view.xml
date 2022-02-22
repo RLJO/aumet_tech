@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+     <record id="stock_production_lot_form_inherit" model="ir.ui.view">
+        <field name="name">stock.production.lot.form.inherit</field>
+        <field name="model">stock.production.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='expiration_dates']//group//group//field[@name='expiration_date']"
+                   position="attributes">
+                 <attribute name="widget">date</attribute>
+            </xpath>
+            <xpath expr="//page[@name='expiration_dates']//group//group//field[@name='removal_date']"
+                   position="attributes">
+                 <attribute name="widget">date</attribute>
+            </xpath>
+            <xpath expr="//page[@name='expiration_dates']//group//group//field[@name='use_date']"
+                   position="attributes">
+                 <attribute name="widget">date</attribute>
+            </xpath>
+            <xpath expr="//page[@name='expiration_dates']//group//group//field[@name='alert_date']"
+                   position="attributes">
+                 <attribute name="widget">date</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

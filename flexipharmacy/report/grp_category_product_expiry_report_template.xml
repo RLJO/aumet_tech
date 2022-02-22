@@ -5,263 +5,114 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <t t-if="data.get('group_by')=='category'">
-                            <h2>
-                                <center>Product Expiry Report</center>
-                            </h2>
-                            <div class="oe_structure"/>
-                            <div class="row">
-                                <div style='width:20%;'>
-                                    <strong>From Date</strong>
-                                    <span t-esc="data.get('from_date')"/>
-                                    <br/>
-                                </div>
-                                <div style='width:20%;'>
-                                    <strong>To Date</strong>
-                                    <span t-esc="data.get('to_date')"/>
-                                    <br/>
-                                </div>
+                        <div class="o_page_header">
+                            <center>
+                                <h2>
+                                    <span>Product Expiry Report</span>
+                                </h2>
+                            </center>
+                        </div>
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div style='width:20%;font-size: 16px;'>
+                                <strong>From Date:</strong>
+                                <span t-esc="from_date"/>
+                                <br/>
                             </div>
+                            <div style='width:20%;font-size: 16px;'>
+                                <strong>To Date:</strong>
+                                <span t-esc="to_date"/>
+                                <br/>
+                            </div>
+                        </div>
+                        <![CDATA[&nbsp;]]>
+                        <br/>
+                        <t t-foreach="docs" t-as="doc">
+                            <h4>
+                                <strong>
+                                    Warehouse:
+                                </strong>
+                                <span t-esc="doc['warehouse']"/>
+                            </h4>
                             <br/>
-                            <t t-foreach="data.keys()" t-as="o">
-                                <t t-if="not o in ['group_by', 'today_date', 'from_date', 'to_date']">
-                                    <h5>
-                                        <strong>
-                                            Category:
-                                        </strong>
-                                        <span t-esc="o"/>
-                                    </h5>
-                                    <br/>
-
-                                    <table class="table table-sm o_main_table" style='font-size: 12px;'>
-                                        <tr>
-                                            <th>Lot/Serial number</th>
-                                            <th>Product</th>
-                                            <th>Location</th>
-                                            <th>Internal Ref</th>
-                                            <th>Expiry Date</th>
-                                            <th>Remaining days</th>
-                                            <th style='text-align: right;'>Available Quantity</th>
-                                        </tr>
-                                        <t t-foreach="data.get(o)" t-as="line">
-                                            <tr>
+                            <t t-foreach="doc['locations']" t-as="location">
+                                <h5>
+                                    <strong>
+                                        Location:
+                                    </strong>
+                                    <span t-esc="location['location']"/>
+                                </h5>
+                                <table class="table table-condensed" style="table-layout: fixed; width: 100%;">
+                                    <thead style='font-size: 14px;'>
+                                        <th>
+                                            <strong>Product</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Vendor</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Available Quantity</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Remaining Quantity</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Remaining Day</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Expiration Date</strong>
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="location['products']" t-as="product">
+                                            <tr style="background-color: #A9A9A9;font-size: 12px;">
                                                 <td>
-                                                    <span t-esc="line.get('name')"/>
+                                                    <span t-esc="product['name']"/>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="line.get('product_id')"/>
+                                                    <span t-esc="product['vendor']"/>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="line.get('location_name')"/>
+                                                    <span t-esc="product['available_qty']"/>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="line.get('default_code')"/>
+                                                    <span t-esc="product['remaining_qty']"/>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="line.get('expiration_date')"/>
+                                                    <span t-esc="product['remaining_day']"/>
                                                 </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('remaining_days')"/>
-                                                </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('available_qty')"/>
+                                                <td>
+                                                    <span t-esc="product['expiry_date']"/>
                                                 </td>
                                             </tr>
+                                            <tbody>
+                                                <t t-foreach="product['lots']" t-as="lot">
+                                                    <tr style='font-size: 12px;'>
+                                                        <td>
+                                                            <span/>
+                                                        </td>
+                                                        <td>
+                                                            <span/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="lot['available_qty']"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="lot['remaining_qty']"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="lot['remaining_day']"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="lot['expiry_date']"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
                                         </t>
-                                    </table>
-                                </t>
-                            </t>
-                        </t>
-                        <t t-if="data.get('group_by')=='location'">
-                            <h2>
-                                <center>Product Expiry Report</center>
-                            </h2>
-                            <div class='row'>
-                                 <div style='width:50%;padding-left: 16px;'>
-                                    <strong>From Date</strong>
-                                    <span t-esc="data.get('from_date')"/>
-                                    <br/>
-                                </div>
-                                <div style='width:50%;'>
-                                    <strong>To Date</strong>
-                                    <span t-esc="data.get('to_date')"/>
-                                    <br/>
-                                </div>
-                            </div>
-                            <t t-foreach="data.keys()" t-as="o">
-                                <t t-if="o not in ['group_by', 'today_date', 'from_date', 'to_date']">
-                                    <h5>
-                                        <strong>
-                                            Location:
-                                        </strong>
-                                        <span t-esc="o"/>
-                                    </h5>
-                                    <br/>
-                                    <table class="table table-sm o_main_table">
-                                        <tr>
-                                            <th>Lot/Serial number</th>
-                                            <th>Product</th>
-                                            <th>Category</th>
-                                            <th>Internal Ref</th>
-                                            <th>Expiry Date</th>
-                                            <th>Remaining Days</th>
-                                            <th>Available Quantity</th>
-                                        </tr>
-                                        <t t-foreach="data.get(o)" t-as="line">
-                                            <tr>
-                                                <td>
-                                                    <span t-esc="line.get('name')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('product_id')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('product_category')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('default_code')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('expiration_date')"/>
-                                                </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('remaining_days')"/>
-                                                </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('available_qty')"></span>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                    </table>
-                                </t>
-                            </t>
-                        </t>
-                        <t t-if="data.get('group_by')=='product'">
-                            <h2>
-                                <center>Product Expiry Report</center>
-                            </h2>
-                            <div class='row'>
-                                 <div style='width:50%;padding-left: 16px;'>
-                                    <strong>From Date</strong>
-                                    <span t-esc="data.get('from_date')"/>
-                                    <br/>
-                                </div>
-                                <div style='width:50%;'>
-                                    <strong>To Date</strong>
-                                    <span t-esc="data.get('to_date')"/>
-                                    <br/>
-                                </div>
-                            </div>
-                            <t t-foreach="data.keys()" t-as="o">
-                                <t t-if="o not in ['group_by', 'today_date', 'from_date', 'to_date']">
-                                    <h5>
-                                        <strong>
-                                            Product:
-                                        </strong>
-                                        <span t-esc="o"/>
-                                    </h5>
-                                    <br/>
-                                    <table class="table table-sm o_main_table">
-                                        <tr>
-                                            <th>Lot/Serial number</th>
-                                            <!-- <th>Product</th> -->
-                                            <th>Category</th>
-                                            <th>Internal Ref</th>
-                                            <th>Expiry Date</th>
-                                            <th>Remaining Days</th>
-                                            <th>Available Quantity</th>
-                                        </tr>
-                                        <t t-foreach="data.get(o)" t-as="line">
-                                            <tr>
-                                                <td>
-                                                    <span t-esc="line.get('name')"/>
-                                                </td>
-                                                <!-- <td>
-                                                    <span t-esc="line.get('product_id')"/>
-                                                </td> -->
-                                                <td>
-                                                    <span t-esc="line.get('product_category')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('default_code')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('expiration_date')"/>
-                                                </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('remaining_days')"/>
-                                                </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('available_qty')"></span>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                    </table>
-                                </t>
-                            </t>
-                        </t>
-                        <t t-if="data.get('group_by')=='warehouse'">
-                            <h2>
-                                <center>Product Expiry Report</center>
-                            </h2>
-                            <div class='row'>
-                                 <div style='width:50%;padding-left: 16px;'>
-                                    <strong>From Date</strong>
-                                    <span t-esc="data.get('from_date')"/>
-                                    <br/>
-                                </div>
-                                <div style='width:50%;'>
-                                    <strong>To Date</strong>
-                                    <span t-esc="data.get('to_date')"/>
-                                    <br/>
-                                </div>
-                            </div>
-                            <t t-foreach="data.keys()" t-as="o">
-                                <t t-if="o not in ['group_by', 'today_date', 'from_date', 'to_date']">
-                                    <h5>
-                                        <strong>
-                                            Warehouse:
-                                        </strong>
-                                        <span t-esc="o"/>
-                                    </h5>
-                                    <br/>
-                                    <table class="table table-sm o_main_table">
-                                        <tr>
-                                            <th>Lot/Serial number</th>
-                                            <th>Product</th>
-                                            <th>Category</th>
-                                            <th>Internal Ref</th>
-                                            <th>Expiry Date</th>
-                                            <th>Remaining Days</th>
-                                            <th>Available Quantity</th>
-                                        </tr>
-                                        <t t-foreach="data.get(o)" t-as="line">
-                                            <tr>
-                                                <td>
-                                                    <span t-esc="line.get('name')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('product_id')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('product_category')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('default_code')"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line.get('expiration_date')"/>
-                                                </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('remaining_days')"/>
-                                                </td>
-                                                <td style='text-align: right;'>
-                                                    <span t-esc="line.get('available_qty')"></span>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                    </table>
-                                </t>
+                                    </tbody>
+                                </table>
+                                <p style="page-break-after:always"/>
                             </t>
                         </t>
                     </div>

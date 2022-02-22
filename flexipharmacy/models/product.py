@@ -17,7 +17,6 @@ from itertools import groupby
 from odoo.exceptions import ValidationError
 
 
-
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
@@ -137,7 +136,7 @@ class ProductProduct(models.Model):
         today = datetime.today()
         today_end_date = datetime.strftime(today, "%Y-%m-%d 23:59:59")
         today_date = datetime.strftime(today, "%Y-%m-%d 00:00:00")
-        
+
         company_id = self.env.user.company_id.id
         categ_nearexpiry_data = self.category_expiry(company_id)
         location_obj = self.env['stock.location']
@@ -189,12 +188,14 @@ class ProductProduct(models.Model):
                 """ % (today_date, today_exp_date, company_id)
                 self._cr.execute(today_expire_data_id)
             result = self._cr.fetchall()
-        
+
             for each in result:
                 for each_in in each:
                     product_id_list.append(each_in)
-            product_config_color_id = self.env['product.expiry.config'].search([('no_of_days', '=',exp_day),('active', '=', True)], limit=1)
-            exp_in_day_detail[exp_day] = {'product_id': product_id_list, 'color': product_config_color_id.block_color, 'text_color': product_config_color_id.text_color}
+            product_config_color_id = self.env['product.expiry.config'].search(
+                [('no_of_days', '=', exp_day), ('active', '=', True)], limit=1)
+            exp_in_day_detail[exp_day] = {'product_id': product_id_list, 'color': product_config_color_id.block_color,
+                                          'text_color': product_config_color_id.text_color}
             exp_in_day[exp_day] = len(result)
 
         category_list = copy.deepcopy(categ_nearexpiry_data)
@@ -210,7 +211,9 @@ class ProductProduct(models.Model):
             category_res.append({'categ_name': k, 'qty': qty, 'id': stock_lot})
 
         exp_in_day['expired'] = self.env['stock.production.lot'].search_count([('state_check', '=', 'Expired')])
-        exp_in_day['today_expired'] = self.env['stock.production.lot'].search_count([('state_check', '=', 'Expired'), ('expiration_date', '<=', today_end_date), ('expiration_date', '>=', today_date)])
+        exp_in_day['today_expired'] = self.env['stock.production.lot'].search_count(
+            [('state_check', '=', 'Expired'), ('expiration_date', '<=', today_end_date),
+             ('expiration_date', '>=', today_date)])
         list_near_expire = []
         quant_sql = '''
             SELECT 
@@ -294,7 +297,7 @@ class ProductProduct(models.Model):
     def expiry_product_alert(self):
         email_notify_date = None
         notification_days = self.env['ir.config_parameter'].sudo().get_param(
-            'aspl_product_expiry_alert.email_notification_days')
+            'flexipharmacy.email_notification_days')
 
         if notification_days:
             email_notify_date = date.today() + timedelta(days=int(notification_days))
@@ -302,13 +305,13 @@ class ProductProduct(models.Model):
             end_email_notify_date = datetime.strftime(email_notify_date, "%Y-%m-%d 23:59:59")
 
             res_user_ids = ast.literal_eval(
-                self.env['ir.config_parameter'].sudo().get_param('aspl_product_expiry_alert.res_user_ids'))
+                self.env['ir.config_parameter'].sudo().get_param('flexipharmacy.res_user_ids'))
 
             SQL = """
                 SELECT 
-                    sl.name AS stock_location, 
+                    sl.complete_name AS stock_location, 
                     pt.name AS Product,pp.id AS product_id, 
-                    CAST(lot.expiration_date AS DATE),lot.name lot_number, 
+                    CAST(lot.expiration_date AS DATE),lot.expiration_date lot_number, 
                     sq.quantity AS Quantity
                 FROM 
                     stock_quant AS sq
@@ -320,19 +323,20 @@ class ProductProduct(models.Model):
                     sl.usage = 'internal' AND 
                     pt.tracking != 'none' AND 
                     lot.expiration_date BETWEEN '%s' AND '%s'
-            """ %(start_email_notify_date,end_email_notify_date)
+            """ % (start_email_notify_date, end_email_notify_date)
             self._cr.execute(SQL)
             near_expiry_data_list = self._cr.dictfetchall()
             email_list = []
-            template_id = self.env.ref('aspl_product_expiry_alert.email_template_product_expiry_alert')
+            template_id = self.env.ref('flexipharmacy.email_template_product_expiry_alert')
             res_user_ids = self.env['res.users'].browse(res_user_ids)
             email_list = [x.email for x in res_user_ids if x.email]
             email_list_1 = ', '.join(map(str, email_list))
-            company_name = self.env['res.company']._company_default_get('your.module')
+            company_name = self.env['res.company']._company_default_get()
             if res_user_ids and template_id and near_expiry_data_list:
                 # template_id.send_mail(int(near_expiry_data_list[0]['product_id']), force_send=True)
-                template_id.with_context({'company': company_name,'email_list': email_list_1, 'from_dis': True,
-                                          'data_list': near_expiry_data_list}).send_mail(int(near_expiry_data_list[0]['product_id']), force_send=True)
+                template_id.with_context({'company': company_name, 'email_list': email_list_1, 'from_dis': True,
+                                          'data_list': near_expiry_data_list}).send_mail(
+                    int(near_expiry_data_list[0]['product_id']), force_send=True)
         return True
 
 

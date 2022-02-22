@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_partner_credit"
+                        context="{'default_partner_id': active_id}">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="total_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                        </span>
+                        <span class="o_stat_text">Credit</span>
+                    </div>
+                </button>
+            </div>
+            <field name="category_id" position="after">
+                <field name="is_insurance" string="Insurance Company"
+                       attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
+            </field>
+
+            <page name="sales_purchases" position="after">
+                <page string="Health Care Insurance">
+                    <field name="is_insurance" invisible="1" />
+                    <group col="4" attrs="{'invisible': [('is_insurance', '=', True)]}">
+                        <field name="insurance_company"/>
+                        <field name="member_number"/>
+                        <field name="hi_percentage"/>
+                        <field name="under_insurance"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="commission"/>
+                        </group>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>

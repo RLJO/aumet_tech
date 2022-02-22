@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="multi_barcodes_trees" model="ir.ui.view">
+            <field name="name">multi barcodes tree</field>
+            <field name="model">multi.barcodes</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_view_multi_barcodes">
+            <field name="name">Multi Barcodes</field>
+            <field name="res_model">multi.barcodes</field>
+            <field name="view_mode">tree</field>
+        </record>
+    </data>
+</odoo>

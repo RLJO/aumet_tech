@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="stock.action_orderpoint" model="ir.actions.act_window">
+        <field name="name">Reordering Rules</field>
+        <field name="res_model">stock.warehouse.orderpoint</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="stock.view_warehouse_orderpoint_tree_editable_config"/>
+        <field name="search_view_id" ref="stock.warehouse_orderpoint_search"/>
+        <field name="context">{'search_default_trigger': 'auto'}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            No reordering rule found
+          </p><p>
+            Define a minimum stock rule so that Aumet Pharmacy creates automatically requests for quotations or draft manufacturing orders to resupply your stock.
+          </p>
+        </field>
+    </record>
+
+</odoo>

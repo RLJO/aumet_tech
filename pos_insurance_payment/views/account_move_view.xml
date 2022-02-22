@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="form_number"/>
+            </xpath>
+            <field name="user_id" position="before">
+                <field name="patient_hi_percentage" string="Patient Coverage (%)"
+                       attrs="{'invisible': [('patient_hi_percentage', '=', 0)]}"/>
+                <field name="customer_paid" string="Contribution Amount"
+                       attrs="{'invisible': [('customer_paid', '=', 0)]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

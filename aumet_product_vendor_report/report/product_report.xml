@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--shortfall report-->
+    <record id="aumet_shortfall_report_action" model="ir.actions.report">
+        <field name="name">ShortFall Report</field>
+        <field name="model">shortfall.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">aumet_product_vendor_report.shortfall_template</field>
+        <field name="report_file">aumet_product_vendor_report.shortfall_template</field>
+    </record>
+    <!--purchase by vendor-->
+    <record id="aumet_purchase_vendor_report_action" model="ir.actions.report">
+        <field name="name">Purchase By Vendor</field>
+        <field name="model">purchase.vendor.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">aumet_product_vendor_report.purchase_vendor_template</field>
+        <field name="report_file">aumet_product_vendor_report.purchase_vendor_template</field>
+    </record>
+     <!--vendor report-->
+    <record id="aumet_product_vendors_report_action" model="ir.actions.report">
+        <field name="name">Product By Vendors</field>
+        <field name="model">vendor.product.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">aumet_product_vendor_report.vendor_product_template</field>
+        <field name="report_file">aumet_product_vendor_report.vendor_product_template</field>
+    </record>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="wizard_vendor_product" model="ir.ui.view">
+            <field name="name">Vendor Product</field>
+            <field name="model">vendor.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Product vendors">
+                    <group>
+                        <group>
+                            <field name="vendor_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Print" class="oe_highlight" type="object" name="print_report"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="vendor_product_report_action" model="ir.actions.act_window">
+            <field name="name">Vendor's Product</field>
+            <field name="res_model">vendor.product.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem action="vendor_product_report_action" id="menu_vendor_product_report"
+                  parent="stock.menu_warehouse_report" sequence="152"/>
+    </data>
+</odoo>

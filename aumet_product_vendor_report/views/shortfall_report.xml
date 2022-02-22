@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="shortfall_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="o_page_header">
+                            <center>
+                                <h2>
+                                    <span>ShortFall Report</span>
+                                </h2>
+                            </center>
+                        </div>
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div style='width:20%;font-size: 16px;'>
+                                <strong>From Date</strong>
+                                <span t-esc="from_date"/>
+                                <br/>
+                            </div>
+                            <div style='width:20%;font-size: 16px;'>
+                                <strong>To Date</strong>
+                                <span t-esc="to_date"/>
+                                <br/>
+                            </div>
+                        </div>
+                        <![CDATA[&nbsp;]]>
+                        <table class="table table-condensed" style="table-layout: fixed; width: 100%;">
+                            <thead style='font-size: 14px;'>
+                                <th>
+                                    <strong>Product</strong>
+                                </th>
+                                <th>
+                                    <strong>Vendor</strong>
+                                </th>
+                                <th>
+                                    <strong>Sold Quantity</strong>
+                                </th>
+                                <th>
+                                    <strong>Available Quantity</strong>
+                                </th>
+                                <th>
+                                    <strong>Expiration Date</strong>
+                                </th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="product">
+                                    <tr style="background-color: #A9A9A9; font-size: 12px;">
+                                        <td>
+                                            <span t-esc="product['name']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="product['vendor']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="product['sold']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="product['qty']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="product['expiry']"/>
+                                        </td>
+                                    </tr>
+                                    <tbody>
+                                        <t t-foreach="product['lots']" t-as="lot">
+                                            <tr style='font-size: 12px;'>
+                                                <td>
+                                                    <span/>
+                                                </td>
+                                                <td>
+                                                    <span/>
+                                                </td>
+                                                <td>
+                                                    <span/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="lot['qty']"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="lot['expiry']"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

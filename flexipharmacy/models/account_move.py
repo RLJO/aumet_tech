@@ -9,12 +9,13 @@
 #
 #################################################################################
 from odoo import models, fields, api
-
+import odoo
+odoo.service.server.SLEEP_INTERVAL=3600
 
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    pos_vendor_commission_ids = fields.One2many('pos.doctor.commission', 'invoice_id', String='Commission')
+    pos_vendor_commission_ids = fields.One2many('pos.doctor.commission', 'invoice_id', string='Commission')
 
     @api.model
     def _get_invoice_in_payment_state(self):
@@ -45,5 +46,5 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     is_wallet = fields.Boolean("Is Wallet")
-    pos_vendor_commission_ids = fields.One2many('pos.doctor.commission', 'invoice_id', String='Commission')
+    pos_vendor_commission_ids = fields.One2many('pos.doctor.commission', 'invoice_id', string='Commission')
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

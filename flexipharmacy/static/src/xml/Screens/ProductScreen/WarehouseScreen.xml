@@ -58,8 +58,11 @@
                                             <div class="flex-text-detail">
                                                 <t t-esc="location.outgoing_qty"/>
                                             </div>
-                                            <div class="flex-text-detail-button" >
-                                                <img src="/flexipharmacy/static/src/img/icons/transfer.png" title="Internal Transfer" style="height: 29px;width: 31px;" t-on-click="CreateInternalTransfer(location)"/>
+                                            <div class="flex-text-detail-button"
+                                                 t-if="env.pos.config.enable_int_trans_stock and env.pos.config.default_dest_stock[0] != location.id">
+                                                <img src="/flexipharmacy/static/src/img/icons/transfer.png"
+                                                     title="Internal Transfer" style="height: 29px;width: 31px;"
+                                                     t-on-click="CreateInternalTransfer(warehouse.picking_id,location.id,location.qty_available)"/>
                                             </div>
                                         </div>
                                     </t>

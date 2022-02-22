@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_aumet_address" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.aumet_address</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='o_address_format']" position="replace">
+                <div class="o_address_format">
+                    <field name="country_id" placeholder="Country" class="o_address_country"
+                           required="1"
+                           options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+
+                    <field name="province_id" placeholder="Province" class="o_address_country"
+                           context="{'default_country_id': country_id}"
+                           options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"
+                           domain="[('country_id','=',country_id)]"/>
+                    <field name="city" placeholder="Province..." invisible="1"/>
+
+                    <field name="city_id" placeholder="City" class="o_address_city"
+                           domain="[('province_id','=',province_id)]"
+                           options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"
+
+                           context="{'default_province_id': province_id, 'default_country_id': country_id}"/>
+                    <field name="district_id" placeholder="District" class="o_address_street"
+                           domain="[('city_id','=',city_id)]"
+                           context="{'default_city_id': city_id}"
+                           options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"
+                    />
+                    <field name="state_id" class="o_address_state" placeholder="State"
+                           options="{&quot;no_open&quot;: True}" invisible="1"/>
+                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                    <field name="street2" placeholder="Street 2..." invisible="1"/>
+                    <field name="zip" placeholder="ZIP" class="o_address_zip" invisible="1"/>
+                </div>
+
+            </xpath>
+            <field name="email" position="after">
+                <field name="name_sdr" placeholder="SDR"/>
+                <field name="customer_success" placeholder="Customer success"/>
+            </field>
+        </field>
+    </record>
+</odoo>

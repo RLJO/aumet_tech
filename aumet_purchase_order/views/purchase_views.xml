@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="purchase_order_form_inh" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="product_uom" position="after">
+                <field name="prod_sale_price"/>
+                <field name="profit"/>
+            </field>
+        </field>
+    </record>
+
+    <template id="track_po_line_sale_price_template">
+        <div>
+            <strong>The sales price has been updated.</strong>
+            <ul>
+                <li><t t-esc="line.product_id.display_name"/>:</li>
+                Sale price: <t t-esc="line.prod_sale_price" /> -&gt; <t t-esc="float(prod_sale_price)"/><br/>
+            </ul>
+        </div>
+    </template>
+
+</odoo>

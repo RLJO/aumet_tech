@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="partner_demo_company_jo" model="res.partner">
+        <field name="name">JO Company</field>
+        <field name="vat"></field>
+        <field name="street"></field>
+        <field name="city"></field>
+        <field name="country_id" ref="base.jo"/>
+        <field name="zip"></field>
+        <field name="phone"></field>
+        <field name="email"></field>
+        <field name="website"></field>
+    </record>
+
+    <record id="demo_company_jo" model="res.company">
+        <field name="name">JO Company</field>
+        <field name="partner_id" ref="partner_demo_company_jo"/>
+    </record>
+
+    <function model="res.company" name="_onchange_country_id">
+        <value eval="[ref('demo_company_jo')]"/>
+    </function>
+
+    <function model="res.users" name="write">
+        <value eval="[ref('base.user_root'), ref('base.user_admin'), ref('base.user_demo')]"/>
+        <value eval="{'company_ids': [(4, ref('l10n_jo.demo_company_jo'))]}"/>
+    </function>
+
+    <function model="account.chart.template" name="try_loading">
+        <value eval="[ref('l10n_jo.account_arabic_coa_general')]"/>
+        <value model="res.company" eval="obj().env.ref('l10n_jo.demo_company_jo')"/>
+    </function>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+
+    <t t-name="ErrorPopup" t-inherit="point_of_sale.ErrorPopup" t-inherit-mode="extension" owl="1">
+        <xpath expr='//main[hasclass("body")]' position="replace">
+            <p class="body">An issue has occurred, please contact our support team</p>
+         </xpath>
+    </t>
+
+</templates>

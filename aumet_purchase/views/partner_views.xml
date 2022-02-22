@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_partner_property_form_aumet_purchase" model="ir.ui.view">
+            <field name="name">res.partner.aumet.purchase</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="purchase.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_purchase_currency_id" position="after">
+                    <field name="is_agent"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

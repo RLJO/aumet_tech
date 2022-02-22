@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="paperformat_product_shortfall_report" model="report.paperformat">
+        <field name="name">Product ShortFalls</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="page_width">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">28</field>
+        <field name="margin_right">7</field>
+        <field name="margin_left">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">15</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report id="product_shortfall_report"
+            model="product.shortfall.report"
+            string="ShortFalls Report"
+            report_type="qweb-pdf"
+            name="aumet_inventory.product_shortfall_report_view"
+            paperformat="aumet_inventory.paperformat_product_shortfall_report"
+            menu="False"/>
+
+    <template id="product_shortfall_report_view">
+        <t t-call="web.html_container">
+            <div class="header" style="border-bottom: 1px solid black;">
+                <h3 class="text-center">ShortFall Report
+                </h3>
+            </div>
+            <div class="page" style="font-size: 10px !important;">
+                <div class="article mt0 o_report_layout_standard">
+                    <table class="table table-condensed table-bordered">
+                        <thead>
+                            <th style="width: 10px !important;">Product</th>
+                            <th style="width: 10px !important;">Agent</th>
+                            <t t-foreach="docs['locations']" t-as="doc">
+                                <t t-foreach="doc" t-as="d">
+                                    <th style="width: 10px !important;">
+                                        <t t-esc="d"/>
+                                    </th>
+                                </t>
+                            </t>
+                            <th style="width: 10px !important;">Available Quantity</th>
+                            <th style="width: 10px !important;">Forecasted</th>
+                            <!--<th style="width: 10px !important;">Sold Quantity</th>-->
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs['locations']" t-as="doc">
+                                <t t-foreach="doc" t-as="do">
+                                    <t t-foreach="doc[do]['products']" t-as="d">
+                                        <tr>
+                                            <td>
+                                                <span t-esc="d['product']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="d['agent']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="d['qty']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="d['available']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="d['forecast']"/>
+                                            </td>
+                                            <!--<td>-->
+                                            <!--<span t-esc="d['sale_qty']"/>-->
+                                            <!-- </td>-->
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </t>
+    </template>
+</odoo>

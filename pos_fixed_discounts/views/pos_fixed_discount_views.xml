@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="pos_config_view_form_inherit_pos_fixed_discounts" model="ir.ui.view">
+            <field name="name">pos.config.form.inherit.pos.fixed.discount</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="pos_discount.pos_config_view_form_inherit_pos_discount" />
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='discount_pc']" position="after">
+                        <label string="Discount Product" for="fixed_discount_product_id" class="col-lg-3 o_light_label"/>
+                        <field name="fixed_discount_product_id" attrs="{'required':[('module_pos_discount','=',True)]}"/>
+                        <label string="Discount(Amount)" for="fixed_discount_pc" class="col-lg-3 o_light_label"/>
+                        <field name="fixed_discount_pc"/>
+            </xpath>
+            </field>
+        </record>
+
+        <data noupdate="1">
+            <function model="pos.config" name="_default_fixed_discount_value_on_module_install"/>
+        </data>
+</odoo>

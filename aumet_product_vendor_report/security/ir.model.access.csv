@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_shortfall_report,shortfall_wizard,model_shortfall_wizard,,1,1,1,1
+access_purchase_vendor_report,purchase_vendor_wizard,model_purchase_vendor_wizard,,1,1,1,1
+access_vendor_product_report,vendor_product_wizard,model_vendor_product_wizard,,1,1,1,1

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<record id="view_inventory_form_op_inherit" model="ir.ui.view">
+        <field name="name">stock.inventory.form.op.inherit</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="aumet_inventory.view_inventory_form_op"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//page//field[@name='line_ids']//tree//field[@name='location_id']" position="after">
+               <field name="lot_ref" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

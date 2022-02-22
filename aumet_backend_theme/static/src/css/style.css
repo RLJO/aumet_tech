@@ -1,0 +1,104 @@
+@font-face {
+    font-family: cairo;
+    src: url(/aumet_backend_theme/static/src/fonts/Cairo-Light.ttf);
+}
+
+@font-face {
+    font-family: cairo-bold;
+    src: url(/aumet_backend_theme/static/src/fonts/Cairo-Bold.ttf);
+}
+
+.o-app-name {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-shadow: none !important;
+    font-family: cairo-bold;
+}
+
+.alert {
+    z-index: 1 !important;
+}
+
+.o_menu_apps .dropdown-menu {
+    color: black;
+    margin-top: 4px;
+    font-size: 1.25rem;
+    text-shadow: none;
+    font-family: cairo;
+}
+
+.o_main_navbar > ul > li > a, .o_main_navbar > ul > li > label {
+    border: white;
+}
+
+.o_menu_apps .dropdown-menu.show {
+
+    background-size: auto;
+    background-origin: padding-box;
+    background-origin: border-box;
+    background-size: cover;
+    height: calc(100vh);
+    max-height: calc(100vh);
+    border-top: 46px solid #04bca6;
+    top: 0 !important;
+    background: rgb(29, 242, 221);
+    background: white;
+    z-index: 10;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1df2dd", endColorstr="#ffffff", GradientType=1);
+}
+
+.search-container {
+    display: none;
+}
+
+.o_menu_apps .dropdown-menu .o-app-icon {
+    height: auto;
+    max-width: 10rem;
+}
+
+.o_menu_apps .dropdown-menu .o_app {
+    width: 24.667%;
+}
+
+.table-sm th, .table-sm td {
+    padding: .75rem !important;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%233CB9A8' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.custom-control.custom-checkbox .custom-control-input:not(:checked):not(:indeterminate) ~ .custom-control-label:before {
+    background: #FFFFFF;
+}
+
+.o_list_view .o_list_table {
+      table-layout: auto !important;
+       width: 100% !important;
+}
+.o_list_view .table-responsive .o_list_table thead tr:nth-child(1) th[data-name="sequence"]{
+width : 25px !important;
+}
+.o_list_view .table-responsive .o_list_table thead tr:nth-child(1) th[class="o_list_record_remove"]{
+width : 25px !important;
+}
+.o_list_view .table-responsive .o_list_table thead tr:nth-child(1) th {
+    border-left: 0 !important;
+    background-color: #04bca6 !important;
+    vertical-align: center !important;
+    color: #FFFFFF !important;
+    text-align:center !important;
+}
+
+.o_graph_controller .o_graph_renderer {
+    padding: 25px;
+}
+
+button:disabled,
+button[disabled]
+{
+    color: #04bca6 !important;
+}

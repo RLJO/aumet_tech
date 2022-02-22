@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="aumet_barcode_view_inventory_form_op" model="ir.ui.view">
+        <field name="name">aumet_inventory.view_inventory_form_op.aumet</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="aumet_inventory.view_inventory_form_op"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="_barcode_scanned" widget="barcode_handler"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="aumet_barcode_view_inventory_form_in" model="ir.ui.view">
+        <field name="name">aumet_inventory.view_inventory_form_in.aumet</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="aumet_inventory.view_inventory_form_in"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="_barcode_scanned" widget="barcode_handler"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="aumet_barcode_view_inventory_form_out" model="ir.ui.view">
+        <field name="name">aumet_inventory.view_inventory_form_out.aumet</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="aumet_inventory.view_inventory_form_op_out"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="_barcode_scanned" widget="barcode_handler"/>
+            </field>
+        </field>
+    </record>
+</odoo>

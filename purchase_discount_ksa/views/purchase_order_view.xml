@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="purchase_order_discount_ksa_form" model="ir.ui.view">
+        <field name="name">purchase.order.discount.ksa.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//notebook//page[@name='products']//field[@name='order_line']//tree//field[@name='discount_amount']"
+                   position="after">
+                <field name="discount_2" groups="purchase_discount_ksa.group_discount_ksa"/>
+            </xpath>
+            <xpath expr="//form//notebook//page[@name='products']//field[@name='order_line']//form//group//group//field[@name='discount_amount']"
+                   position="after">
+                <field name="discount_2" groups="purchase_discount_ksa.group_discount_ksa"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
